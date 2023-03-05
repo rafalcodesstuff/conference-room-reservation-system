@@ -6,12 +6,13 @@ import javax.persistence.*;
 public class Organization {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
     private Integer id;
-    @Column(name = "name")
+
+    @Column(name = "name", nullable = false)
     private String name;
 
     public Organization(String name) {
-        this.id = id;
         this.name = name;
     }
 
