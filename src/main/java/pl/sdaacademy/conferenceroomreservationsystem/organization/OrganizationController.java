@@ -1,11 +1,19 @@
 package pl.sdaacademy.conferenceroomreservationsystem.organization;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 @RestController
@@ -19,40 +27,48 @@ class OrganizationController {
     }
 
     @GetMapping
-    List<Organization> getAllOrganizations() {
-        return organizationService.getOrganizations();
+    List<Organization> getAllOrganizations(@RequestParam(required = false) String name) {
+        return organizationService.getOrganizations(name);
+    }
+
+    @GetMapping(path = "{id}")
+    Organization getOrganizationById(@NonNull @PathVariable Integer id) {
+        return organizationService.getOrganizationByID(id);
     }
 
     @PostMapping
-    ResponseEntity addOrganization(@RequestBody Organization organization) { // takes json data (raw in postman)
+    ResponseEntity<String> addOrganization(@Valid @RequestBody Organization organization) { // takes json data (raw in postman)
         try {
             organizationService.addOrganization(organization);
-            return ResponseEntity.ok(HttpStatus.ACCEPTED);
+            return new ResponseEntity<>("Added the organization: " + organization.getName(), HttpStatus.OK);
         } catch (NullPointerException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Incorrect Json Data");
+            return new ResponseEntity<>("Incorrect Json Data", HttpStatus.CONFLICT);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Element Already Exists");
+            return new ResponseEntity<>("Element Already Exists", HttpStatus.CONFLICT);
         }
     }
 
     @DeleteMapping("/{name}")
-    ResponseEntity removeOrganization(@PathVariable("name") String name) {
-        try {
-            organizationService.removeOrganization(name);
-            return ResponseEntity.ok(HttpStatus.ACCEPTED);
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Organization Not Found");
-        }
+    void removeOrganization(@PathVariable("name") String name) {
+        organizationService.removeOrganization(name);
+//        return new ResponseEntity<>("Removed the organization: " + name, HttpStatus.OK);
     }
 
     //    @GetMapping("/update?{old-org}{new-org}")
     @PutMapping
-    ResponseEntity updateOrganization(@RequestParam("old-org") String old_org, @RequestParam("new-org") String new_org) {
-        try {
-            organizationService.updateOrganization(old_org, new_org);
-            return ResponseEntity.ok(HttpStatus.ACCEPTED);
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Organization Not Found");
-        }
+    void updateOrganization(@RequestParam("old-org") String old_org, @RequestParam("new-org") String new_org) {
+        organizationService.updateOrganization(old_org, new_org);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Object> handleValidationExceptions(
+            MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 }

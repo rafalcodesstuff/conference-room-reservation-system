@@ -5,6 +5,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -18,14 +19,26 @@ class OrganizationService {
         this.organizationRepository = organizationRepository;
     }
 
-    List<Organization> getOrganizations() {
+    List<Organization> getOrganizations(String name) {
+        if (name != null) {
+            return organizationRepository.findByName(name)
+                    .map(Collections::singletonList)
+                    .orElse(Collections.emptyList());
+        }
         return organizationRepository.findAll();
     }
 
-    void addOrganization(@NonNull Organization organization) throws RuntimeException {
-        // check if already exists
-//        if (organization.getName().isEmpty() || organization.getName().isBlank()) throw new NullPointerException("Name does not exist");
+    Organization getOrganizationByID(Integer id) {
+        return organizationRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Organization Not Found, ID:  " + id));
+    }
 
+//    Organization getOrganizationByName(String name) {
+//        return organizationRepository.findByName(name)
+//                .orElseThrow(() -> new NoSuchElementException("Organization Not Found, Name:  " + name));
+//    }
+
+    void addOrganization(@NonNull Organization organization) throws RuntimeException {
         organizationRepository.findByName(organization.getName()).ifPresent(org -> {
             throw new RuntimeException("Element Already Exists");
         });
