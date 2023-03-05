@@ -71,7 +71,7 @@ class OrganizationController {
 
     @ExceptionHandler(NoSuchElementException.class)
     ResponseEntity<String> handleNoSuchElementException(NoSuchElementException ex) {
-        return new ResponseEntity<String>(ex.getMessage(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
 }
