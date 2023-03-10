@@ -19,7 +19,6 @@ public class Equipment {
     private String equipmentName;
 
     @ManyToOne
-    @Column(name = "conference_room", nullable = false)
     private ConferenceRoom conferenceRoom;
 
     public Equipment(String equipmentName, ConferenceRoom conferenceRoom) {

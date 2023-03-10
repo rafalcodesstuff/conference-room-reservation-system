@@ -25,15 +25,12 @@ public class Organization {
     private Person ogranizationLeader;
 
     @OneToMany(mappedBy = "organization")
-    @JoinColumn(name = "organization_members", referencedColumnName = "id")
     private List<Person> organizationMembers;
 
     @OneToMany(mappedBy = "organization")
-    @JoinColumn(name = "reservations", referencedColumnName = "id")
     private List<Reservation> reservations;
 
     @OneToMany(mappedBy = "organization")
-    @JoinColumn(name = "conference_rooms", referencedColumnName = "id")
     private List<Reservation> conferenceRooms;
 
     public Organization(String name) {

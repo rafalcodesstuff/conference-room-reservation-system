@@ -34,19 +34,15 @@ public class Reservation {
     private LocalTime time;
 
     @ManyToOne
-    @Column(name = "organization", nullable = false)
     private Organization organization;
 
     @OneToOne
-    @JoinColumn(name = "event_organizer", nullable = false)
     private Person eventOrganizer;
 
     @OneToMany
-    @JoinColumn(name = "attendees")
     private List<Person> attendees;
 
     @ManyToOne
-    @Column(name = "conference_room", nullable = false)
     private ConferenceRoom conferenceRoom;
 
     public Reservation(String reservationName, short maxAttendees, LocalDate date, LocalTime time, Organization organization, Person eventOrganizer, List<Person> attendees, ConferenceRoom conferenceRoom) {

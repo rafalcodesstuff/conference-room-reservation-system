@@ -22,7 +22,6 @@ public class Person {
     private String personName;
 
     @ManyToOne
-    @Column(name = "organization", nullable = false)
     private Organization organization;
 
     @Enumerated(EnumType.STRING)
@@ -30,7 +29,6 @@ public class Person {
     private Roles role = Roles.MEMBER;
 
     @OneToMany
-    @JoinColumn(name = "reservations")
     private List<Reservation> reservations;
 
     public Person(String personName, Organization organization) {

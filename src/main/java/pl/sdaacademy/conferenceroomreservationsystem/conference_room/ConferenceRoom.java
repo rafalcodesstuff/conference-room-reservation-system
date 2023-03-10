@@ -20,10 +20,10 @@ public class ConferenceRoom {
     @Column(name = "name", nullable = false)
     private String roomName;
 
-    @OneToMany(mappedBy = "conference_room")
+    @OneToMany(mappedBy = "conferenceRoom")
     private List<Reservation> reservations;
 
-    @OneToMany(mappedBy = "conference_room")
+    @OneToMany(mappedBy = "conferenceRoom")
     private List<Equipment> equipment;
 
     public ConferenceRoom(String roomName) {
