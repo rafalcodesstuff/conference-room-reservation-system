@@ -33,11 +33,6 @@ class OrganizationService {
                 .orElseThrow(() -> new NoSuchElementException("Organization Not Found, ID:  " + id));
     }
 
-//    Organization getOrganizationByName(String name) {
-//        return organizationRepository.findByName(name)
-//                .orElseThrow(() -> new NoSuchElementException("Organization Not Found, Name:  " + name));
-//    }
-
     void addOrganization(@NonNull Organization organization) throws RuntimeException {
         organizationRepository.findByName(organization.getName()).ifPresent(org -> {
             throw new RuntimeException("Element Already Exists");
