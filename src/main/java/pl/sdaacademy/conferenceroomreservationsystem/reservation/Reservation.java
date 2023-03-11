@@ -39,7 +39,7 @@ public class Reservation {
     @OneToOne
     private Person eventOrganizer;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Person> attendees;
 
     @ManyToOne
