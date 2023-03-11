@@ -1,7 +1,6 @@
-package pl.sdaacademy.conferenceroomreservationsystem.organization;
+package pl.sdaacademy.conferenceroomreservationsystem.models;
 
-import pl.sdaacademy.conferenceroomreservationsystem.person.Person;
-import pl.sdaacademy.conferenceroomreservationsystem.reservation.Reservation;
+import pl.sdaacademy.conferenceroomreservationsystem.models.person.PersonEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -9,7 +8,8 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
-public class Organization {
+@Table(name = "organization")
+public class OrganizationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -22,22 +22,22 @@ public class Organization {
 
     @OneToOne
     @JoinColumn(name = "organization_leader_id", referencedColumnName = "id")
-    private Person ogranizationLeader;
+    private PersonEntity organizationLeader;
 
     @OneToMany(mappedBy = "organization")
-    private List<Person> organizationMembers;
+    private List<PersonEntity> organizationMembers;
 
     @OneToMany(mappedBy = "organization")
-    private List<Reservation> reservations;
+    private List<ReservationEntity> reservations;
 
-    @OneToMany(mappedBy = "organization")
-    private List<Reservation> conferenceRooms;
+    @OneToMany
+    private List<ConferenceRoomEntity> conferenceRoom;
 
-    public Organization(String name) {
+    public OrganizationEntity(String name) {
         this.name = name;
     }
 
-    public Organization() {
+    public OrganizationEntity() {
     }
 
     public Integer getId() {
@@ -56,11 +56,11 @@ public class Organization {
         this.name = name;
     }
 
-    public Person getOgranizationLeader() {
-        return ogranizationLeader;
+    public PersonEntity getOrganizationLeader() {
+        return organizationLeader;
     }
 
-    public void setOgranizationLeader(Person ogranizationLeader) {
-        this.ogranizationLeader = ogranizationLeader;
+    public void setOrganizationLeader(PersonEntity organizationLeader) {
+        this.organizationLeader = organizationLeader;
     }
 }

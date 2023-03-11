@@ -1,4 +1,4 @@
-package pl.sdaacademy.conferenceroomreservationsystem.organization;
+package pl.sdaacademy.conferenceroomreservationsystem.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -7,6 +7,8 @@ import org.springframework.lang.NonNull;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import pl.sdaacademy.conferenceroomreservationsystem.models.OrganizationEntity;
+import pl.sdaacademy.conferenceroomreservationsystem.services.OrganizationService;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -16,7 +18,7 @@ import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/organizations")
-class OrganizationController {
+public class OrganizationController {
     private final OrganizationService organizationService;
 
     @Autowired
@@ -25,17 +27,17 @@ class OrganizationController {
     }
 
     @GetMapping
-    List<Organization> getAllOrganizations(@RequestParam(required = false) String name) {
+    List<OrganizationEntity> getAllOrganizations(@RequestParam(required = false) String name) {
         return organizationService.getOrganizations(name);
     }
 
     @GetMapping(path = "{id}")
-    Organization getOrganizationById(@NonNull @PathVariable Integer id) {
+    OrganizationEntity getOrganizationById(@NonNull @PathVariable Integer id) {
         return organizationService.getOrganizationByID(id);
     }
 
     @PostMapping
-    ResponseEntity<String> addOrganization(@Valid @RequestBody Organization organization) { // takes json data (raw in postman)
+    ResponseEntity<String> addOrganization(@Valid @RequestBody OrganizationEntity organization) { // takes json data (raw in postman)
         try {
             organizationService.addOrganization(organization);
             return new ResponseEntity<>("Added the organization: " + organization.getName(), HttpStatus.OK);

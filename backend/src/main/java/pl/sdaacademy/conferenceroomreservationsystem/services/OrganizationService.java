@@ -1,16 +1,17 @@
-package pl.sdaacademy.conferenceroomreservationsystem.organization;
+package pl.sdaacademy.conferenceroomreservationsystem.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import pl.sdaacademy.conferenceroomreservationsystem.models.OrganizationEntity;
+import pl.sdaacademy.conferenceroomreservationsystem.repository.OrganizationRepository;
 
-import javax.annotation.PostConstruct;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
-class OrganizationService {
+public class OrganizationService {
 
     private final OrganizationRepository organizationRepository;
 
@@ -19,7 +20,7 @@ class OrganizationService {
         this.organizationRepository = organizationRepository;
     }
 
-    List<Organization> getOrganizations(String name) {
+    public List<OrganizationEntity> getOrganizations(String name) {
         if (name != null) {
             return organizationRepository.findByName(name)
                     .map(Collections::singletonList)
@@ -28,25 +29,25 @@ class OrganizationService {
         return organizationRepository.findAll();
     }
 
-    Organization getOrganizationByID(Integer id) {
+    public OrganizationEntity getOrganizationByID(Integer id) {
         return organizationRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Organization Not Found, ID:  " + id));
     }
 
-    void addOrganization(@NonNull Organization organization) throws RuntimeException {
+    public void addOrganization(@NonNull OrganizationEntity organization) throws RuntimeException {
         organizationRepository.findByName(organization.getName()).ifPresent(org -> {
             throw new RuntimeException("Element Already Exists");
         });
-        organizationRepository.save(new Organization(organization.getName()));
+        organizationRepository.save(new OrganizationEntity(organization.getName()));
     }
 
-    void removeOrganization(@NonNull String name) throws NoSuchElementException {
-        Organization organization = organizationRepository.findByName(name)
+    public void removeOrganization(@NonNull String name) throws NoSuchElementException {
+        OrganizationEntity organization = organizationRepository.findByName(name)
                 .orElseThrow(() -> new NoSuchElementException("Organization Not Found: " + name));
         organizationRepository.delete(organization);
     }
 
-    void updateOrganization(@NonNull String old_org, @NonNull String new_org) throws NoSuchElementException {
+    public void updateOrganization(@NonNull String old_org, @NonNull String new_org) throws NoSuchElementException {
         // check if in database
         organizationRepository.findByName(old_org)
                 .ifPresentOrElse(org -> {
@@ -58,10 +59,10 @@ class OrganizationService {
     }
 
 
-    @PostConstruct
-    void init() {
-        organizationRepository.save(new Organization("Google"));
-        organizationRepository.save(new Organization("Amazon"));
-        organizationRepository.save(new Organization("Meta"));
-    }
+//    @PostConstruct
+//    void init() {
+//        organizationRepository.save(new OrganizationEntity("Google"));
+//        organizationRepository.save(new OrganizationEntity("Amazon"));
+//        organizationRepository.save(new OrganizationEntity("Meta"));
+//    }
 }

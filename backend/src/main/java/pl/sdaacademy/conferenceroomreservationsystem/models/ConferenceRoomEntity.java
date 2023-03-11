@@ -1,7 +1,4 @@
-package pl.sdaacademy.conferenceroomreservationsystem.conference_room;
-
-import pl.sdaacademy.conferenceroomreservationsystem.equipment.Equipment;
-import pl.sdaacademy.conferenceroomreservationsystem.reservation.Reservation;
+package pl.sdaacademy.conferenceroomreservationsystem.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -9,7 +6,8 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
-public class ConferenceRoom {
+@Table(name = "conference_room")
+public class ConferenceRoomEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -20,17 +18,24 @@ public class ConferenceRoom {
     @Column(name = "name", nullable = false)
     private String roomName;
 
-    @OneToMany(mappedBy = "conferenceRoom")
-    private List<Reservation> reservations;
+    @Size(min = 2)
+    @Column(name = "amount_of_spots", nullable = false)
+    private Short amountOfSpots;
+
+    @ManyToOne
+    private OrganizationEntity organization;
 
     @OneToMany(mappedBy = "conferenceRoom")
-    private List<Equipment> equipment;
+    private List<ReservationEntity> reservations;
 
-    public ConferenceRoom(String roomName) {
+    @OneToMany(mappedBy = "conferenceRoom", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<EquipmentEntity> equipment;
+
+    public ConferenceRoomEntity(String roomName) {
         this.roomName = roomName;
     }
 
-    public ConferenceRoom() {
+    public ConferenceRoomEntity() {
     }
 
     public Integer getId() {

@@ -1,8 +1,6 @@
-package pl.sdaacademy.conferenceroomreservationsystem.reservation;
+package pl.sdaacademy.conferenceroomreservationsystem.models;
 
-import pl.sdaacademy.conferenceroomreservationsystem.conference_room.ConferenceRoom;
-import pl.sdaacademy.conferenceroomreservationsystem.organization.Organization;
-import pl.sdaacademy.conferenceroomreservationsystem.person.Person;
+import pl.sdaacademy.conferenceroomreservationsystem.models.person.PersonEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -12,7 +10,8 @@ import java.time.LocalTime;
 import java.util.List;
 
 @Entity
-public class Reservation {
+@Table(name = "reservation")
+public class ReservationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -34,18 +33,18 @@ public class Reservation {
     private LocalTime time;
 
     @ManyToOne
-    private Organization organization;
+    private OrganizationEntity organization;
 
     @OneToOne
-    private Person eventOrganizer;
+    private PersonEntity eventOrganizer;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Person> attendees;
+    private List<PersonEntity> attendees;
 
     @ManyToOne
-    private ConferenceRoom conferenceRoom;
+    private ConferenceRoomEntity conferenceRoom;
 
-    public Reservation(String reservationName, short maxAttendees, LocalDate date, LocalTime time, Organization organization, Person eventOrganizer, List<Person> attendees, ConferenceRoom conferenceRoom) {
+    public ReservationEntity(String reservationName, short maxAttendees, LocalDate date, LocalTime time, OrganizationEntity organization, PersonEntity eventOrganizer, List<PersonEntity> attendees, ConferenceRoomEntity conferenceRoom) {
         this.reservationName = reservationName;
         this.maxAttendees = maxAttendees;
         this.date = date;
@@ -56,7 +55,7 @@ public class Reservation {
         this.conferenceRoom = conferenceRoom;
     }
 
-    public Reservation() {
+    public ReservationEntity() {
     }
 
     public Integer getId() {
@@ -99,27 +98,27 @@ public class Reservation {
         this.time = time;
     }
 
-    public Organization getOrganization() {
+    public OrganizationEntity getOrganization() {
         return organization;
     }
 
-    public void setOrganization(Organization organization) {
+    public void setOrganization(OrganizationEntity organization) {
         this.organization = organization;
     }
 
-    public Person getEventOrganizer() {
+    public PersonEntity getEventOrganizer() {
         return eventOrganizer;
     }
 
-    public void setEventOrganizer(Person eventOrganizer) {
+    public void setEventOrganizer(PersonEntity eventOrganizer) {
         this.eventOrganizer = eventOrganizer;
     }
 
-    public ConferenceRoom getConferenceRoom() {
+    public ConferenceRoomEntity getConferenceRoom() {
         return conferenceRoom;
     }
 
-    public void setConferenceRoom(ConferenceRoom conferenceRoom) {
+    public void setConferenceRoom(ConferenceRoomEntity conferenceRoom) {
         this.conferenceRoom = conferenceRoom;
     }
 }

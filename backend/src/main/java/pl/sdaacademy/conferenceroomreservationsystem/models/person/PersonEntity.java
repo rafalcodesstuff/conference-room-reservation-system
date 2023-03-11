@@ -1,7 +1,7 @@
-package pl.sdaacademy.conferenceroomreservationsystem.person;
+package pl.sdaacademy.conferenceroomreservationsystem.models.person;
 
-import pl.sdaacademy.conferenceroomreservationsystem.organization.Organization;
-import pl.sdaacademy.conferenceroomreservationsystem.reservation.Reservation;
+import pl.sdaacademy.conferenceroomreservationsystem.models.OrganizationEntity;
+import pl.sdaacademy.conferenceroomreservationsystem.models.ReservationEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -9,7 +9,8 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
-public class Person {
+@Table(name = "person")
+public class PersonEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,21 +23,21 @@ public class Person {
     private String personName;
 
     @ManyToOne
-    private Organization organization;
+    private OrganizationEntity organization;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private Roles role = Roles.MEMBER;
 
     @OneToMany
-    private List<Reservation> reservations;
+    private List<ReservationEntity> reservations;
 
-    public Person(String personName, Organization organization) {
+    public PersonEntity(String personName, OrganizationEntity organization) {
         this.personName = personName;
         this.organization = organization;
     }
 
-    public Person() {
+    public PersonEntity() {
     }
 
     public Integer getId() {
@@ -55,11 +56,11 @@ public class Person {
         this.personName = personName;
     }
 
-    public Organization getOrganization() {
+    public OrganizationEntity getOrganization() {
         return organization;
     }
 
-    public void setOrganization(Organization organization) {
+    public void setOrganization(OrganizationEntity organization) {
         this.organization = organization;
     }
 

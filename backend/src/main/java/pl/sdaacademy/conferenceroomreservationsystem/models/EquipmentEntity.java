@@ -1,13 +1,12 @@
-package pl.sdaacademy.conferenceroomreservationsystem.equipment;
-
-import pl.sdaacademy.conferenceroomreservationsystem.conference_room.ConferenceRoom;
+package pl.sdaacademy.conferenceroomreservationsystem.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Entity
-public class Equipment {
+@Table(name = "equipment")
+public class EquipmentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -19,14 +18,14 @@ public class Equipment {
     private String equipmentName;
 
     @ManyToOne
-    private ConferenceRoom conferenceRoom;
+    private ConferenceRoomEntity conferenceRoom;
 
-    public Equipment(String equipmentName, ConferenceRoom conferenceRoom) {
+    public EquipmentEntity(String equipmentName, ConferenceRoomEntity conferenceRoom) {
         this.equipmentName = equipmentName;
         this.conferenceRoom = conferenceRoom;
     }
 
-    public Equipment() {
+    public EquipmentEntity() {
     }
 
     public Integer getId() {
