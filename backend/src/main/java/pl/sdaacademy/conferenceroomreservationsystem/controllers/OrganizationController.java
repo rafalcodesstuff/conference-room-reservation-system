@@ -26,53 +26,27 @@ public class OrganizationController {
         this.organizationService = organizationService;
     }
 
-    @GetMapping
-    List<OrganizationEntity> getAllOrganizations(@RequestParam(required = false) String name) {
-        return organizationService.getOrganizations(name);
-    }
-
-    @GetMapping(path = "{id}")
-    OrganizationEntity getOrganizationById(@NonNull @PathVariable Integer id) {
-        return organizationService.getOrganizationByID(id);
+    @GetMapping(path = "{name}")
+    ResponseEntity<OrganizationEntity> getOrganizationByName(@NonNull @PathVariable String name) {
+        OrganizationEntity result = organizationService.getOrganizationByName(name);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping
     ResponseEntity<String> addOrganization(@Valid @RequestBody OrganizationEntity organization) { // takes json data (raw in postman)
-        try {
-            organizationService.addOrganization(organization);
-            return new ResponseEntity<>("Added the organization: " + organization.getName(), HttpStatus.OK);
-        } catch (NullPointerException e) {
-            return new ResponseEntity<>("Incorrect Json Data", HttpStatus.CONFLICT);
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>("Element Already Exists", HttpStatus.CONFLICT);
-        }
+        organizationService.addOrganization(organization);
+        return new ResponseEntity<>("Added the organization: " + organization.getName(), HttpStatus.OK);
     }
 
     @DeleteMapping("/{name}")
-    void removeOrganization(@PathVariable("name") String name) {
+    ResponseEntity<String> removeOrganization(@PathVariable("name") String name) {
         organizationService.removeOrganization(name);
-//        return new ResponseEntity<>("Removed the organization: " + name, HttpStatus.OK);
+        return new ResponseEntity<>("Removed the organization: " + name, HttpStatus.OK);
     }
 
-    //    @GetMapping("/update?{old-org}{new-org}")
     @PutMapping
-    void updateOrganization(@RequestParam("old-org") String old_org, @RequestParam("new-org") String new_org) {
+    ResponseEntity<String> updateOrganization(@RequestParam("old-org") String old_org, @RequestParam("new-org") String new_org) {
         organizationService.updateOrganization(old_org, new_org);
-    }
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    ResponseEntity<Object> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(NoSuchElementException.class)
-    ResponseEntity<String> handleNoSuchElementException(NoSuchElementException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(String.format("Updated organization: %s to %s", old_org, new_org), HttpStatus.OK);
     }
 }

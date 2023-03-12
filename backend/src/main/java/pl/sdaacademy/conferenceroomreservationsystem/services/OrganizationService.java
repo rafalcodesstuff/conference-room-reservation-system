@@ -3,12 +3,12 @@ package pl.sdaacademy.conferenceroomreservationsystem.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import pl.sdaacademy.conferenceroomreservationsystem.exceptions.RecordAlreadyExistsException;
+import pl.sdaacademy.conferenceroomreservationsystem.exceptions.RecordNotFoundException;
 import pl.sdaacademy.conferenceroomreservationsystem.models.OrganizationEntity;
 import pl.sdaacademy.conferenceroomreservationsystem.repository.OrganizationRepository;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.NoSuchElementException;
+import javax.annotation.PostConstruct;
 
 @Service
 public class OrganizationService {
@@ -20,49 +20,47 @@ public class OrganizationService {
         this.organizationRepository = organizationRepository;
     }
 
-    public List<OrganizationEntity> getOrganizations(String name) {
-        if (name != null) {
-            return organizationRepository.findByName(name)
-                    .map(Collections::singletonList)
-                    .orElse(Collections.emptyList());
-        }
-        return organizationRepository.findAll();
+    // get all organization, left here in case admin profile will be created
+//    public List<OrganizationEntity> getOrganizations(@NonNull String name) {
+//        return organizationRepository.findByName(name)
+//                .map(Collections::singletonList)
+//                .orElse(Collections.emptyList());
+//    }
+
+    public OrganizationEntity getOrganizationByName(@NonNull String name) {
+        return organizationRepository.findByName(name)
+                .orElseThrow(() -> new RecordNotFoundException("Organization Not Found:  " + name));
     }
 
-    public OrganizationEntity getOrganizationByID(Integer id) {
-        return organizationRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Organization Not Found, ID:  " + id));
-    }
-
-    public void addOrganization(@NonNull OrganizationEntity organization) throws RuntimeException {
+    public void addOrganization(@NonNull OrganizationEntity organization) {
         organizationRepository.findByName(organization.getName()).ifPresent(org -> {
-            throw new RuntimeException("Element Already Exists");
+            throw new RecordAlreadyExistsException("Organization already exists: " + organization.getName());
         });
-        organizationRepository.save(new OrganizationEntity(organization.getName()));
+        organizationRepository.save(organization);
     }
 
-    public void removeOrganization(@NonNull String name) throws NoSuchElementException {
+    public void removeOrganization(@NonNull String name) {
         OrganizationEntity organization = organizationRepository.findByName(name)
-                .orElseThrow(() -> new NoSuchElementException("Organization Not Found: " + name));
+                .orElseThrow(() -> new RecordNotFoundException("Organization Not Found: " + name));
         organizationRepository.delete(organization);
     }
 
-    public void updateOrganization(@NonNull String old_org, @NonNull String new_org) throws NoSuchElementException {
+    public void updateOrganization(@NonNull String old_org, @NonNull String new_org) {
         // check if in database
         organizationRepository.findByName(old_org)
                 .ifPresentOrElse(org -> {
                     org.setName(new_org);
                     organizationRepository.save(org);
                 }, () -> {
-                    throw new NoSuchElementException("Organization Not Found");
+                    throw new RecordNotFoundException("Organization Not Found");
                 });
     }
 
 
-//    @PostConstruct
-//    void init() {
-//        organizationRepository.save(new OrganizationEntity("Google"));
-//        organizationRepository.save(new OrganizationEntity("Amazon"));
-//        organizationRepository.save(new OrganizationEntity("Meta"));
-//    }
+    @PostConstruct
+    void init() {
+        organizationRepository.save(new OrganizationEntity("Google"));
+        organizationRepository.save(new OrganizationEntity("Amazon"));
+        organizationRepository.save(new OrganizationEntity("Meta"));
+    }
 }

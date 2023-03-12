@@ -1,4 +1,4 @@
-package pl.sdaacademy.conferenceroomreservationsystem.reservation;
+package pl.sdaacademy.conferenceroomreservationsystem.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
