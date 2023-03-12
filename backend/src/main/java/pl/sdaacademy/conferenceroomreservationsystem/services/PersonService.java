@@ -8,6 +8,7 @@ import pl.sdaacademy.conferenceroomreservationsystem.models.person.PersonEntity;
 import pl.sdaacademy.conferenceroomreservationsystem.repository.OrganizationRepository;
 import pl.sdaacademy.conferenceroomreservationsystem.repository.PersonRepository;
 
+import javax.validation.constraints.Pattern;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -28,7 +29,11 @@ public class PersonService {
                 .orElseThrow(() -> new NoSuchElementException("Person Not Found:  " + name));
     }
 
-    List<PersonEntity> getAllPeopleInOrganization(@NonNull String organizationName) {
+    List<PersonEntity> getAllPeopleInOrganization(
+            @NonNull
+            @Pattern(regexp = "^[a-zA-Z0-9_-]{3,30}$", message = "Name must be alpha-numeric (plus: \"_\", \"-\") and 3 - 30 characters")
+            String organizationName
+    ) {
         return personRepository.findAllPeopleInOrganization(organizationName);
     }
 

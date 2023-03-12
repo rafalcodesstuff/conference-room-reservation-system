@@ -9,6 +9,7 @@ import pl.sdaacademy.conferenceroomreservationsystem.models.OrganizationEntity;
 import pl.sdaacademy.conferenceroomreservationsystem.repository.OrganizationRepository;
 
 import javax.annotation.PostConstruct;
+import javax.validation.constraints.Pattern;
 
 @Service
 public class OrganizationService {
@@ -32,7 +33,11 @@ public class OrganizationService {
                 .orElseThrow(() -> new RecordNotFoundException("Organization Not Found:  " + name));
     }
 
-    public void addOrganization(@NonNull OrganizationEntity organization) {
+    public void addOrganization(
+            @NonNull
+            @Pattern(regexp = "^[a-zA-Z0-9_-]{3,30}$", message = "Name must be alpha-numeric (plus: \"_\", \"-\") and 3 - 30 characters")
+            OrganizationEntity organization
+    ) {
         organizationRepository.findByName(organization.getName()).ifPresent(org -> {
             throw new RecordAlreadyExistsException("Organization already exists: " + organization.getName());
         });
