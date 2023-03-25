@@ -1,0 +1,147 @@
+<div class="container p-3 border border-black rounded mb-5">
+    <form [formGroup]="addReservationForm">
+        <div>
+            <h3>Add a Reservation</h3>
+            <p class="h5 text-muted">Enter Information Below</p>
+        </div>
+        <div>
+            <label for="title-input" class="ms-1">Name of Reservation</label>
+            <input id="title-input" type="text" class="form-control mt-1" formControlName="reservationName" placeholder="Reservation Name">
+            <p *ngIf="addReservationForm.get('reservationName')?.errors?.['required'] && addReservationForm.get('reservationName')!.dirty" 
+                class="alert alert-primary">
+                This field cannot be empty
+            </p>
+            <p *ngIf="addReservationForm.get('reservationName')?.errors?.['pattern'] && addReservationForm.get('reservationName')!.dirty"
+                class="alert alert-primary">
+                This field must be a max of 30 characters and be alphanumeric. (allowed: _ -)
+            </p>
+
+            <label for="conference-room-input" class="ms-1 mt-2">Name of Conference Room</label>
+            <input id="conference-room-input" type="text" class="form-control mt-1" formControlName="conferenceRoomName"
+                placeholder="Conference Room Name">
+            <p *ngIf="addReservationForm.get('conferenceRoomName')?.errors?.['required'] && addReservationForm.get('conferenceRoomName')!.dirty"
+                class="alert alert-primary">
+                This field cannot be empty
+            </p>
+            <p *ngIf="addReservationForm.get('conferenceRoomName')?.errors?.['pattern'] && addReservationForm.get('conferenceRoomName')!.dirty"
+                class="alert alert-primary">
+                This field must be a max of 30 characters and be alphanumeric. (allowed: _, -)
+            </p>
+
+            <label for="color-picker" class="ms-1 mt-2">Pick a Color</label>
+            <select id="color-picker" class="form-select mt-1" formControlName="color">
+                <option [selected]="true" value="red">Red</option>
+                <option value="yellow">Yellow</option>
+                <option value="blue">Blue</option>
+            </select>
+
+            <div class="card mb-2 mt-3">
+                <div class="card-body">
+                    <div class="ms-1">
+                        <input type="checkbox" id="is-all-day-checkbox" class="form-check-input me-2" 
+                            formControlName="isAllDay">
+                        <label for="is-all-day-checkbox">All Day Reservation</label>
+                    </div>
+                    <div class="ms-1">
+                        <input type="checkbox" id="is-multi-day-checkbox" class="me-2 form-check-input"
+                            (click)="datapickerCollapse.toggle(); toggleSecondDate(); toggleFormControls();" 
+                            formControlName="isMultiDay"
+                        >
+                        <label for="is-multi-day-checkbox">Multi-day Reservation</label>
+                    </div>
+                    <div class="ms-1">
+                        <input type="checkbox" id="has-time-checkbox" class="me-2 form-check-input" 
+                            (click)="timepickerCollapse.toggle()" formControlName="hasTime">
+                        <label for="has-time-checkbox">Reservation Has Time</label>
+                    </div>
+                </div>
+            </div>
+
+            <div ngbTooltip="{{ datePickersToolTip }}" [openDelay]="300" [closeDelay]="300">
+                <div class="card mb-2" [ngClass]="{ 'disabledDiv' : isDatePickersDisabled }">
+                    <div class="card-body">
+                        <div class="col-12">
+                            <label for="first-date-picker">First Date</label>
+                            <div class="input-group mt-1">
+                                <input id="first-date-picker" class="form-control" placeholder="yyyy-mm-dd" 
+                                name="dp" 
+                                formControlName="startDate" 
+                                ngbDatepicker
+                                #d="ngbDatepicker" 
+                                />
+                                <button class="btn btn-outline-secondary fa fa-calendar" (click)="d.toggle()" type="button"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div #datapickerCollapse="ngbCollapse" [(ngbCollapse)]="isDatepickerCollapsed">
+                    <div class="card mb-3" [ngClass]="{ 'disabledDiv' : isDatePickersDisabled }">
+                        <div class="card-body">
+                            <div class="col-12">
+                                <label for="second-date-picker">Second Date</label>
+                                <div class="input-group mt-1">
+                                    <input id= "second-date-picker" class="form-control" placeholder="yyyy-mm-dd" 
+                                    name="dp2" 
+                                    formControlName="endDate" 
+                                    ngbDatepicker
+                                    #e="ngbDatepicker" 
+                                    />
+                                    <button class="btn btn-outline-secondary fa fa-calendar" (click)="e.toggle()" type="button"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p *ngIf="addReservationForm.errors?.['badDate'] && !isDatePickersDisabled" class="alert alert-primary">
+                        End Date must be greater than Start Date
+                    </p>
+                </div>
+            </div>
+            <div #timepickerCollapse="ngbCollapse" [(ngbCollapse)]="isTimepickerCollapsed">
+                <div ngbTooltip='{{ timePickersToolTip }}'
+                    [openDelay]="300" [closeDelay]="300">
+                    <div class="card mt-2 mb-3" [ngClass]="{ 'disabledDiv' : isTimePickersDisabled }"> 
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6">
+                                    <label for="start-time-picker">Start Time</label>
+                                    <ngb-timepicker id="start-time-picker" formControlName="startTime"></ngb-timepicker>
+                                </div>
+                                <div class="col-6">
+                                    <label for="end-time-picker">End Time</label>
+                                    <ngb-timepicker id="end-time-picker" formControlName="endTime"></ngb-timepicker>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p *ngIf="
+                            addReservationForm.get('startTime')?.errors?.['timeEmpty'] && 
+                            addReservationForm.get('startTime')!.dirty &&
+                            !isTimePickersDisabled
+                            "
+                        class="alert alert-primary">
+                        Start Time cannot be Empty
+                    </p>
+                    <p *ngIf="
+                            addReservationForm.get('endTime')?.errors?.['timeEmpty'] && 
+                            addReservationForm.get('startTime')!.dirty && 
+                            !isTimePickersDisabled
+                            "
+                        class="alert alert-primary">
+                        End Time cannot be Empty
+                    </p>
+                    <p *ngIf="addReservationForm.errors?.['badTime'] && !isTimePickersDisabled"
+                        class="alert alert-primary">
+                        End Time must be greater than Start Time
+                    </p>
+                </div>
+            </div>
+
+            <button 
+                [disabled]="addReservationForm.invalid" 
+                class="form-control" 
+                (click)="announceAdded()">
+                Add Reservation
+            </button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,22 @@
+<form>
+    <label class="radio-inline mb-1">
+        <input type="checkbox" id="one-day-reservation" checked (click)="isCollapsed = !isCollapsed; hasBeenActivated = true" [attr.aria-expanded]="isCollapsed">
+        One Day Reservation
+    </label>
+
+    <div class="card mb-2">
+        <div class="card-body">
+            <label for="first-date-picker" class="mb-1">First Date</label>
+            <!-- <ngbd-datepicker-popup id="first-date-picker"></ngbd-datepicker-popup> -->
+        </div>
+    </div>
+
+    <div *ngIf="hasBeenActivated" #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed">
+        <div class="card">
+            <div class="card-body">
+                <label for="second-date-picker" class="mb-1">Second Date</label>
+                <!-- <ngbd-datepicker-popup id="second-date-picker"></ngbd-datepicker-popup> -->
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,48 @@
+<div class="container-fluid mt-5 flex-grow-4" id="main-container">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header text-center bg-secondary text-white">
+                    <h4 class="mt-2">Register</h4>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="registrationForm" (ngSubmit)="submitRegistration()">
+                        <div class="form-group mt-2">
+                            <label for="registration-username" >Username:</label>
+                            <input type="text" class="form-control" 
+                                id="registration-username" formControlName="username">
+                        </div>
+                        <div class="form-group mt-2">
+                            <label for="registration-email">Email:</label>
+                            <input type="email" class="form-control" 
+                                id="registration-email" formControlName="email">
+                        </div>
+                        <div class="form-group mt-2">
+                            <label for="registration-pwd">Password:</label>
+                            <input type="password" class="form-control" 
+                                id="registration-pwd" formControlName="password">
+                        </div>
+                        <div class="form-group mt-2">
+                            <label for="organization-select">Organization:</label>
+                            <select name="organzation" id="organization-select" class="form-select"
+                                formControlName="organization" placeholder="Select An Organization">
+                                <option value="" disabled selected>Select your organization</option>
+                                <option value="Google">Google</option>
+                                <option value="Facebook">Facebook</option>
+                                <option value="Amazon">Amazon</option>
+                            </select>
+                        </div>
+                        <div id="registration-errors">
+                            <p class="alert alert-primary mt-3" *ngIf="userExistsError">User Already Exists</p>
+                        </div>
+                        <div class="form-group mt-4">
+                            <button type="button" routerLink="/login" class="form-control mt-2">Login</button>
+                            <button class="form-control mt-2" type="submit" 
+                                [disabled]="registrationForm.invalid">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
