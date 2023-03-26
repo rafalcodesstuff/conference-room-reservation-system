@@ -13,6 +13,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import pl.sdaacademy.conferenceroomreservationsystem.session.SessionFilter;
 import pl.sdaacademy.conferenceroomreservationsystem.user.CurrentUserService;
 
@@ -20,11 +23,11 @@ import pl.sdaacademy.conferenceroomreservationsystem.user.CurrentUserService;
 @EnableWebSecurity
 @EnableJpaRepositories("pl.sdaacademy.conferenceroomreservationsystem.repository")
 public class SecurityConfiguration {
-
-    @Autowired
+//
+    @Autowired // injection through constructor raises an error
     private CurrentUserService userDetailsService;
 
-    @Autowired
+    @Autowired // injection through constructor raises an error
     private SessionFilter sessionFilter;
 
 
@@ -47,6 +50,9 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http = http.cors().and().csrf().disable();
 
+        // for testing
+//        http.authorizeHttpRequests().requestMatchers("/**").permitAll();
+
         http = http.exceptionHandling().authenticationEntryPoint(
                 ((request, response, authException) -> response.sendError(
                         HttpServletResponse.SC_UNAUTHORIZED,
@@ -54,11 +60,10 @@ public class SecurityConfiguration {
                 ))
         ).and();
 
-
         http.authorizeHttpRequests()
                 .requestMatchers("/api/login").permitAll()
+                .requestMatchers("/api/register").permitAll()
                 .anyRequest().authenticated();
-
 
         http.addFilterBefore(
                 sessionFilter,
@@ -66,6 +71,13 @@ public class SecurityConfiguration {
         );
 
         return http.build();
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/api/**", new CorsConfiguration().applyPermitDefaultValues());
+        return source;
     }
 
     @Bean

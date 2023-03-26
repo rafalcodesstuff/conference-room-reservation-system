@@ -19,14 +19,12 @@ public class CurrentUserService implements UserDetailsService {
 
     @Override
     public CurrentUser loadUserByUsername(String username) throws UsernameNotFoundException {
-        final PersonEntity user = repository.findPersonByUsername(username);
-        if (user != null) {
-            CurrentUser currentUser = new CurrentUser();
-            currentUser.setUsername(user.getUsername());
-            currentUser.setPassword(user.getPassword());
-            return currentUser;
-        }
+        PersonEntity user = repository.findPersonByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Failed to find user with username: " + username));
 
-        throw new UsernameNotFoundException("Failed to find user with username: " + username);
+        CurrentUser currentUser = new CurrentUser();
+        currentUser.setUsername(user.getUsername());
+        currentUser.setPassword(user.getPassword());
+        return currentUser;
     }
 }

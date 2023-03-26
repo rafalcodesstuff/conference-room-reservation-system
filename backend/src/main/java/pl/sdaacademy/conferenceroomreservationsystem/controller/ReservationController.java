@@ -10,8 +10,6 @@ import pl.sdaacademy.conferenceroomreservationsystem.entity.ReservationEntity;
 @RestController
 @RequestMapping("/api/reservations")
 public class ReservationController extends AbstractCRUDLController<ReservationEntity, ReservationDTO> {
-
-    @Autowired
     public ReservationController(AbstractCRUDLApi<ReservationEntity, ReservationDTO> api) {
         super(api);
     }

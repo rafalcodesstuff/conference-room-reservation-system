@@ -6,18 +6,23 @@ import { AppComponent } from './app.component';
 import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReservationsModule } from "./reservations/reservations.module";
 import { StartpageModule } from './startpage/startpage.module';
 import { CalendarService } from './reservations/calendar-service.service';
 import { UserService } from './user-service.service';
+import { RequestInterceptor } from "./request.interceptor";
 
 
 @NgModule({
     declarations: [
         AppComponent,
     ],
-    providers: [CalendarService, UserService],
+    providers: [
+        { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptor, multi: true},
+        CalendarService, 
+        UserService
+    ],
     bootstrap: [AppComponent],
     imports: [
         BrowserModule,

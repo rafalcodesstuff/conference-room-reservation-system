@@ -1,6 +1,22 @@
 <div class="row ms-3 me-5">
-    <div class="col-3">
-        <router-outlet></router-outlet>
+    <ul class="nav nav-pills justify-content-start">
+        <li class="nav-item">
+            <a class="nav-link" [class.active]="navActive === 'add-form'"
+                (click)="toggleSwitchFormType('add-form'); ">Add Reservation</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" [class.active]="navActive === 'edit-form'"
+                (click)="toggleSwitchFormType('edit-form'); ">Edit Reservation</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" (click)="logout()">Logout</a>
+        </li>
+    </ul>
+    <div class="col-3 mt-5">
+        <div [ngSwitch]="switchFormType">
+            <reservations-add-form *ngSwitchCase="'add-form'"></reservations-add-form>
+            <reservations-editor  *ngSwitchCase="'edit-form'"></reservations-editor>
+        </div>
     </div>
     <div class="col-9">
         <reservations-calendar></reservations-calendar>

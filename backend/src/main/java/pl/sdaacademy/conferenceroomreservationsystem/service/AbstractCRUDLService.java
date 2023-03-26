@@ -17,16 +17,13 @@ import java.util.List;
 abstract public class AbstractCRUDLService<ENTITY extends DistributedEntity, DTO extends AbstractBaseDTO>
         implements AbstractCRUDLApi<ENTITY, DTO> {
 
-    // region Member
     private static final Logger LOG = LoggerFactory.getLogger(AbstractCRUDLService.class);
     private final DistributedRepository<ENTITY> repository;
-    private AbstractDTOConverter<ENTITY, DTO> converter;
-    private Class<ENTITY> entityClass; // used for creating an entity in database
-    // endregion
+    private final AbstractDTOConverter<ENTITY, DTO> converter;
+    private final Class<ENTITY> entityClass; // used for creating an entity in database
 
-    // region Constructor
-    public AbstractCRUDLService(final DistributedRepository<ENTITY> repository,
-                                final AbstractDTOConverter<ENTITY, DTO> converter) {
+    public AbstractCRUDLService(DistributedRepository<ENTITY> repository,
+                                AbstractDTOConverter<ENTITY, DTO> converter) {
         this.repository = repository;
         this.converter = converter;
 
@@ -34,14 +31,12 @@ abstract public class AbstractCRUDLService<ENTITY extends DistributedEntity, DTO
         final Class<?>[] params = GenericTypeResolver.resolveTypeArguments(getClass(), AbstractCRUDLService.class);
         this.entityClass = (Class<ENTITY>) params[0];
     }
-    // endregion
 
-    // region Implementation
-    protected abstract void updateEntity(final ENTITY entity, final DTO dto);
+    protected abstract void updateEntity(ENTITY entity, DTO dto);
 
     @Override
     public DTO save(DTO dto) {
-        final ENTITY entity;
+        ENTITY entity;
 
         if (dto.isNew()) { // this checks if the entity exists in the database (if id is set)
             entity = initEntity();
@@ -61,7 +56,7 @@ abstract public class AbstractCRUDLService<ENTITY extends DistributedEntity, DTO
         updateEntity(entity, dto);
 
         // save entity
-        final ENTITY savedEntity = repository.save(entity);
+        ENTITY savedEntity = repository.save(entity);
 
         // convert to DTO and return it
         return converter.convert(savedEntity);
@@ -69,7 +64,7 @@ abstract public class AbstractCRUDLService<ENTITY extends DistributedEntity, DTO
 
     @Override
     public DTO getById(Integer id) {
-        final ENTITY entity = findEntityById(id);
+        ENTITY entity = findEntityById(id);
 
         if (entity == null) {
             LOG.error("Failed to find entity with ID '{}'", id);
@@ -87,7 +82,7 @@ abstract public class AbstractCRUDLService<ENTITY extends DistributedEntity, DTO
 
     @Override
     public Boolean delete(Integer id) {
-        final ENTITY entity = findEntityById(id);
+        ENTITY entity = findEntityById(id);
 
         if (entity == null) {
             LOG.error("Failed to delete entity with ID '{}' as it does not exist", id);
@@ -102,14 +97,12 @@ abstract public class AbstractCRUDLService<ENTITY extends DistributedEntity, DTO
             return false;
         }
     }
-    // endregion
 
-    // region Helper
-    private ENTITY findEntityById(final Integer id) {
+    private ENTITY findEntityById(Integer id) {
         return repository.findById(id).orElse(null);
     }
 
-    private List<DTO> getDtos(final List<ENTITY> entities) {
+    private List<DTO> getDtos(List<ENTITY> entities) {
         if (CollectionUtils.isEmpty(entities)) {
             return Collections.emptyList();
         }
@@ -119,14 +112,13 @@ abstract public class AbstractCRUDLService<ENTITY extends DistributedEntity, DTO
 
     private ENTITY initEntity() {
         try {
-            final ENTITY entity = entityClass.getDeclaredConstructor().newInstance();
+            ENTITY entity = entityClass.getDeclaredConstructor().newInstance();
             entity.setCreated(LocalDateTime.now());
 
             return entity;
-        } catch (final Exception e) {
+        } catch (Exception e) {
             LOG.error(e.getMessage(), e);
             return null;
         }
     }
-    // endregion
 }

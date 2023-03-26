@@ -1,3 +1,6 @@
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { UserService } from '../../user-service.service';
 import { Component } from '@angular/core';
 
 @Component({
@@ -6,14 +9,22 @@ import { Component } from '@angular/core';
   styleUrls: ['./reservations-main.component.less']
 })
 export class ReservationsMainComponent {
-  theNumber!: number;
+  switchFormType = "add-form";
+  navActive = "add-form";
 
-  ohShownNumber(theNumber: number): void {
-    console.log("THETHIGBINbjn")
-    this.theNumber = theNumber
+  constructor(private http: HttpClient, private userService: UserService, private router: Router) {}
+
+  toggleSwitchFormType(type: string): void {
+    this.switchFormType = type;
+    this.navActive = type;
   }
 
-  test(): void {
-    console.log("hello from main.ts");
+  logout() {
+    this.http.get('http://localhost:8080/api/logout').subscribe({
+      next: (res) => {
+        sessionStorage.removeItem('token');
+        this.router.navigate(['/login']);
+      },
+    })
   }
 }

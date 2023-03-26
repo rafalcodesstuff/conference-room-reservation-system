@@ -14,7 +14,7 @@ public class PersonDTOConverter extends AbstractDTOConverter<PersonEntity, Perso
         personDTO.setUsername(entity.getUsername());
         personDTO.setEmail(entity.getEmail());
         personDTO.setPassword(entity.getPassword());
-        personDTO.setOrganization(entity.getOrganization());
+        personDTO.setOrganization(entity.getOrganization().getName());
         personDTO.setRole(entity.getRole());
         personDTO.setReservations(entity.getReservations());
 

@@ -31,21 +31,21 @@ public class SessionFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        final String sessionId = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String sessionId = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (sessionId == null || sessionId.length() == 0) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        final String username = sessionRegistry.getUsernameForSession(sessionId);
+        String username = sessionRegistry.getUsernameForSession(sessionId);
         if (username == null) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        final CurrentUser currentUser = currentUserService.loadUserByUsername(username);
+        CurrentUser currentUser = currentUserService.loadUserByUsername(username);
 
-        final UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
                 currentUser, null, currentUser.getAuthorities()
         );
 

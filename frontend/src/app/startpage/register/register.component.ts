@@ -38,7 +38,7 @@ export class RegisterComponent {
       "organization": this.registrationForm.get("organization")?.value
     }
 
-    this.userService.checkIfUserExists(user).subscribe({
+    this.userService.register(user).subscribe({
       error: () => {
         this.userExistsError = true
       },

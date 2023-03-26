@@ -1,10 +1,9 @@
 package pl.sdaacademy.conferenceroomreservationsystem.service;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import pl.sdaacademy.conferenceroomreservationsystem.PersonRoles;
+import pl.sdaacademy.conferenceroomreservationsystem.user.UserRoles;
 import pl.sdaacademy.conferenceroomreservationsystem.dto.PersonDTO;
 
 import java.util.List;
@@ -23,7 +22,7 @@ public class TestPersonService {
         dto.setUsername("Robert_Smith");
         dto.setEmail("asdf@qwerty.com");
         dto.setPassword("P4$$word");
-        dto.setRole(PersonRoles.MEMBER);
+        dto.setRole(UserRoles.MEMBER);
 
         // verify saving
         final PersonDTO savedPerson = service.save(dto);
@@ -76,7 +75,7 @@ public class TestPersonService {
         savedPerson.setUsername("Mike");
         savedPerson.setEmail("qwerty@asdf.com");
         savedPerson.setPassword("drow$$4P");
-        savedPerson.setRole(PersonRoles.LEADER);
+        savedPerson.setRole(UserRoles.LEADER);
         // TODO needs to verify reservations and organization
 
         final PersonDTO updatedPerson = service.save(savedPerson);

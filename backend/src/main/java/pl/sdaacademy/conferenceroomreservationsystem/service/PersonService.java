@@ -2,20 +2,30 @@ package pl.sdaacademy.conferenceroomreservationsystem.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.sdaacademy.conferenceroomreservationsystem.PersonRoles;
+import pl.sdaacademy.conferenceroomreservationsystem.entity.OrganizationEntity;
+import pl.sdaacademy.conferenceroomreservationsystem.exception.RecordNotFoundException;
+import pl.sdaacademy.conferenceroomreservationsystem.repository.OrganizationRepository;
+import pl.sdaacademy.conferenceroomreservationsystem.user.UserRoles;
 import pl.sdaacademy.conferenceroomreservationsystem.api.PersonApi;
 import pl.sdaacademy.conferenceroomreservationsystem.converter.PersonDTOConverter;
 import pl.sdaacademy.conferenceroomreservationsystem.dto.PersonDTO;
 import pl.sdaacademy.conferenceroomreservationsystem.entity.PersonEntity;
 import pl.sdaacademy.conferenceroomreservationsystem.repository.PersonRepository;
 
+import java.util.Optional;
+
 @Service
 public class PersonService extends AbstractCRUDLService<PersonEntity, PersonDTO> implements PersonApi {
 
+    private final PersonRepository personRepository;
+    private final OrganizationRepository organizationRepository;
+
+
     @Autowired
-    public PersonService(final PersonRepository repository,
-                         final PersonDTOConverter converter) {
+    public PersonService(PersonRepository repository, PersonDTOConverter converter, OrganizationRepository organizationRepository) {
         super(repository, converter);
+        this.personRepository = repository;
+        this.organizationRepository = organizationRepository;
     }
 
     @Override
@@ -24,8 +34,12 @@ public class PersonService extends AbstractCRUDLService<PersonEntity, PersonDTO>
             entity.setUsername(dto.getUsername());
             entity.setEmail(dto.getEmail());
             entity.setPassword(dto.getPassword());
-            entity.setOrganization(dto.getOrganization());
-            entity.setRole(PersonRoles.MEMBER);
+
+            OrganizationEntity organization = organizationRepository.findByName(dto.getOrganization())
+                            .orElseThrow(() -> new RecordNotFoundException("Failed to find Organization: " + dto.getOrganization()));
+            entity.setOrganization(organization);
+
+            entity.setRole(UserRoles.MEMBER);
         } else {
             if (dto.getUsername() != null) {
                 entity.setUsername(dto.getUsername());
@@ -37,41 +51,18 @@ public class PersonService extends AbstractCRUDLService<PersonEntity, PersonDTO>
                 entity.setPassword(dto.getPassword());
             }
             if (dto.getOrganization() != null) {
-                entity.setOrganization(dto.getOrganization());
+                OrganizationEntity organization = organizationRepository.findByName(dto.getOrganization())
+                        .orElseThrow(() -> new RecordNotFoundException("Failed to find Organization: " + dto.getOrganization()));
+                entity.setOrganization(organization);
             }
             if (dto.getRole() != null) {
                 entity.setRole(dto.getRole());
             }
         }
     }
-//
-//    public PersonEntity getPersonByName(String name) {
-//        return personRepository.findPersonByUsername(name)
-//                .orElseThrow(() -> new NoSuchElementException("Person Not Found: " + name));
-//
-////        return personRepository.findPersonByUsername(name)
-////                .orElseThrow(() -> new NoSuchElementException("Person Not Found:  " + name));
-//    }
 
-//    @NonNull
-//    @Email
-//    public PersonEntity getPersonByEmail(String email) {
-//        return personRepository.findPersonByEmail(email)
-//                .orElseThrow(() -> new PersonNotFoundException());
-//    }
-//
-//    @NonNull
-//    @Pattern(regexp = "^[a-zA-Z0-9_-]{1,30}$", message = "Name must be alpha-numeric (plus: \"_\", \"-\") and 1 - 30 characters")
-//    public List<PersonEntity> getAllPeopleInOrganization(String organizationName) {
-//        return personRepository.findAllPeopleInOrganization(organizationName);
-//    }
-//
-//    public List<PersonEntity> getAllPeopleInOrganizationASC(@NonNull String organizationName) {
-//        return personRepository.findAllPeopleInOrganization(organizationName);
-//    }
-//
-//    public List<PersonEntity> getAllPeopleInOrganizationDESC(@NonNull String organizationName) {
-//        return personRepository.findAllPeopleInOrganization(organizationName);
-//    }
+    public Optional<PersonEntity> getPersonByUsername(String name) {
+        return personRepository.findPersonByUsername(name);
+    }
 
 }

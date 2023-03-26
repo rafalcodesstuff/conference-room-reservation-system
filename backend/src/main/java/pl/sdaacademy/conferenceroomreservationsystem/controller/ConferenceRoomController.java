@@ -10,8 +10,6 @@ import pl.sdaacademy.conferenceroomreservationsystem.entity.ConferenceRoomEntity
 @RestController
 @RequestMapping("/api/conference-rooms")
 public class ConferenceRoomController extends AbstractCRUDLController<ConferenceRoomEntity, ConferenceRoomDTO> {
-
-    @Autowired
     public ConferenceRoomController(AbstractCRUDLApi<ConferenceRoomEntity, ConferenceRoomDTO> api) {
         super(api);
     }

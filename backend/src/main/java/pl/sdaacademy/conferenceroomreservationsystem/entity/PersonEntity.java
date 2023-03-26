@@ -2,7 +2,10 @@ package pl.sdaacademy.conferenceroomreservationsystem.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import pl.sdaacademy.conferenceroomreservationsystem.PersonRoles;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+import pl.sdaacademy.conferenceroomreservationsystem.user.UserRoles;
 
 import java.util.List;
 
@@ -24,22 +27,22 @@ public class PersonEntity extends DistributedEntity {
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @Size(min = 2, max = 60)
+    @Size(min = 2, max = 65)
     @NotBlank
     @NotNull(message = "Password mustn't be null")
     @Column(name = "password", nullable = false)
     private String password;
 
     @ManyToOne
-//    @NotNull
+    @JoinColumn(name = "organization_id")
     private OrganizationEntity organization;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
-//    @NotNull
-    private PersonRoles role = PersonRoles.MEMBER;
+    private UserRoles role = UserRoles.MEMBER;
 
     @OneToMany
+    @JoinColumn(name = "reservation_id")
     private List<ReservationEntity> reservations;
 
     public PersonEntity(String username, String email, String password, OrganizationEntity organization) {
@@ -90,11 +93,11 @@ public class PersonEntity extends DistributedEntity {
         this.organization = organization;
     }
 
-    public PersonRoles getRole() {
+    public UserRoles getRole() {
         return role;
     }
 
-    public void setRole(PersonRoles role) {
+    public void setRole(UserRoles role) {
         this.role = role;
     }
 

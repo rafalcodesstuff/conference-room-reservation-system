@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 abstract public class DistributedEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "created", nullable = false)
     private LocalDateTime created;

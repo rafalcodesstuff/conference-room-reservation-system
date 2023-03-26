@@ -52,3 +52,5 @@ import { ReservationsMainComponent } from './reservations-main/reservations-main
 export class ReservationsModule { 
 
 }
+
+export { ReservationsCalendarComponent };

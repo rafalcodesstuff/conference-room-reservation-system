@@ -119,9 +119,6 @@ export class ReservationsCalendarComponent {
   constructor(private modal: NgbModal, private reservationService: CalendarService, private changeDetectorRef: ChangeDetectorRef) { 
     this.subscription = this.reservationService.reservationAddedAnnounced$.subscribe(
       reservation => {
-        console.log("got soomething", reservation);
-        // this.addEvent(reservation);
-        
         this.confirmed = true;
         this.announced = true;
 

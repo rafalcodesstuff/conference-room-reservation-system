@@ -1,6 +1,6 @@
 package pl.sdaacademy.conferenceroomreservationsystem.dto;
 
-import pl.sdaacademy.conferenceroomreservationsystem.PersonRoles;
+import pl.sdaacademy.conferenceroomreservationsystem.user.UserRoles;
 import pl.sdaacademy.conferenceroomreservationsystem.entity.OrganizationEntity;
 import pl.sdaacademy.conferenceroomreservationsystem.entity.ReservationEntity;
 
@@ -10,8 +10,8 @@ public class PersonDTO extends AbstractBaseDTO {
     private String username;
     private String email;
     private String password;
-    private OrganizationEntity organization;
-    private PersonRoles role;
+    private String organization;
+    private UserRoles role;
     private List<ReservationEntity> reservations;
 
     public PersonDTO() {
@@ -41,19 +41,19 @@ public class PersonDTO extends AbstractBaseDTO {
         this.password = password;
     }
 
-    public OrganizationEntity getOrganization() {
+    public String getOrganization() {
         return organization;
     }
 
-    public void setOrganization(OrganizationEntity organization) {
+    public void setOrganization(String organization) {
         this.organization = organization;
     }
 
-    public PersonRoles getRole() {
+    public UserRoles getRole() {
         return role;
     }
 
-    public void setRole(PersonRoles role) {
+    public void setRole(UserRoles role) {
         this.role = role;
     }
 

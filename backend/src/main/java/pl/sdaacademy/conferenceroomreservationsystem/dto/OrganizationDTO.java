@@ -4,11 +4,12 @@ import pl.sdaacademy.conferenceroomreservationsystem.entity.ConferenceRoomEntity
 import pl.sdaacademy.conferenceroomreservationsystem.entity.PersonEntity;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class OrganizationDTO extends AbstractBaseDTO {
     private String name;
-    private List<PersonEntity> organizationMembers;
-    private List<ConferenceRoomEntity> conferenceRooms;
+    private List<String> organizationMembers;
+    private List<String> conferenceRooms;
 
     public OrganizationDTO() {
     }
@@ -21,19 +22,23 @@ public class OrganizationDTO extends AbstractBaseDTO {
         this.name = name;
     }
 
-    public List<PersonEntity> getOrganizationMembers() {
+    public List<String> getOrganizationMembers() {
         return organizationMembers;
     }
 
-    public void setOrganizationMembers(List<PersonEntity> organizationMembers) {
-        this.organizationMembers = organizationMembers;
+    public void setOrganizationMembers(List<PersonEntity> members) {
+        this.organizationMembers = members.stream()
+                .map(PersonEntity::getUsername)
+                .collect(Collectors.toList());
     }
 
-    public List<ConferenceRoomEntity> getConferenceRooms() {
+    public List<String> getConferenceRooms() {
         return conferenceRooms;
     }
 
-    public void setConferenceRooms(List<ConferenceRoomEntity> conferenceRooms) {
-        this.conferenceRooms = conferenceRooms;
+    public void setConferenceRooms(List<ConferenceRoomEntity> rooms) {
+        this.conferenceRooms = rooms.stream()
+                .map(ConferenceRoomEntity::getName)
+                .collect(Collectors.toList());
     }
 }

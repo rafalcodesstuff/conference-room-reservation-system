@@ -6,20 +6,25 @@
                     <h4 class="mt-2">Login</h4>
                 </div>
                 <div class="card-body">
-                    <form>
+                    <form name="form" (ngSubmit)="login()" #f="ngForm">
                         <div class="form-group mt-2">
-                            <label for="email">Email address:</label>
-                            <input type="email" class="form-control" id="login-email">
+                            <label for="login-username">Email address:</label>
+                            <input type="text" [(ngModel)]="model.username" name="username"
+                                class="form-control" id="login-username">
                         </div>
                         <div class="form-group mt-2">
-                            <label for="pwd">Password:</label>
-                            <input type="password" class="form-control" id="login-pwd">
+                            <label for="login-pwd">Password:</label>
+                            <input type="password" [(ngModel)]="model.password" name="password"
+                                class="form-control" id="login-pwd">
                         </div>
                         <div class="form-group mt-4">
                             <button type="button" routerLink="/register" 
                                 class="form-control mt-2">Register</button>
                             <button class="form-control bg-primary text-white mt-2" type="submit"
-                                id="pwd">Submit</button>
+                                id="submit-login">Submit</button>
+                        </div>
+                        <div id="login-errors">
+                            <p class="alert alert-primary mt-3" *ngIf="loginError">Username and Password are Incorrect</p>
                         </div>
                     </form>
                 </div>
