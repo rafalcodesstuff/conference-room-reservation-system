@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -23,7 +24,7 @@ import pl.sdaacademy.conferenceroomreservationsystem.user.CurrentUserService;
 @EnableWebSecurity
 @EnableJpaRepositories("pl.sdaacademy.conferenceroomreservationsystem.repository")
 public class SecurityConfiguration {
-//
+
     @Autowired // injection through constructor raises an error
     private CurrentUserService userDetailsService;
 
@@ -51,7 +52,7 @@ public class SecurityConfiguration {
         http = http.cors().and().csrf().disable();
 
         // for testing
-//        http.authorizeHttpRequests().requestMatchers("/**").permitAll();
+        http.authorizeHttpRequests().requestMatchers("/**").permitAll();
 
         http = http.exceptionHandling().authenticationEntryPoint(
                 ((request, response, authException) -> response.sendError(
@@ -75,8 +76,11 @@ public class SecurityConfiguration {
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration corsCfg = new CorsConfiguration().applyPermitDefaultValues();
+        corsCfg.addAllowedMethod(HttpMethod.DELETE); // need this to delete calendar reservationss
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/api/**", new CorsConfiguration().applyPermitDefaultValues());
+        source.registerCorsConfiguration("/api/**", corsCfg);
         return source;
     }
 

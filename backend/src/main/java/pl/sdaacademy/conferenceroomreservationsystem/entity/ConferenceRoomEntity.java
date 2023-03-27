@@ -15,11 +15,11 @@ public class ConferenceRoomEntity extends DistributedEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
-    //    @Size(min = 1)
     @Column(name = "amount_of_spots", nullable = false)
     private Integer amountOfSpots;
 
     @ManyToOne
+    @JoinColumn(name = "organization_id")
     private OrganizationEntity organization;
 
     @OneToMany(mappedBy = "conferenceRoom")

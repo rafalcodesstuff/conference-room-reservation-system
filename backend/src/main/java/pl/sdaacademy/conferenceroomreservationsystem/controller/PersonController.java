@@ -10,7 +10,6 @@ import pl.sdaacademy.conferenceroomreservationsystem.entity.PersonEntity;
 
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin(origins = "http://localhost:4200")
 public class PersonController extends AbstractCRUDLController<PersonEntity, PersonDTO> {
     public PersonController(AbstractCRUDLApi<PersonEntity, PersonDTO> api) {
         super(api);

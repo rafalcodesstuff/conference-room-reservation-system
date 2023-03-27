@@ -30,7 +30,7 @@ public class AuthenticationService {
                 new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
         );
 
-        final String sessionId = sessionRegistry.registerSession(user.getUsername());
+        String sessionId = sessionRegistry.registerSession(user.getUsername());
         ResponseDTO response = new ResponseDTO();
         response.setSessionId(sessionId);
         return response;
@@ -45,7 +45,7 @@ public class AuthenticationService {
         user.setPassword(encryptedPassword);
         personService.save(user);
 
-        final String sessionId = sessionRegistry.registerSession(user.getUsername());
+        String sessionId = sessionRegistry.registerSession(user.getUsername());
         ResponseDTO response = new ResponseDTO();
         response.setSessionId(sessionId);
         return response;

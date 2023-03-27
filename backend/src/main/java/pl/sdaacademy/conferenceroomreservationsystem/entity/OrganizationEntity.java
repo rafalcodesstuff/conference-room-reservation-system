@@ -11,7 +11,7 @@ import java.util.List;
 @Table(name = "organization")
 public class OrganizationEntity extends DistributedEntity {
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     @NotBlank(message = "Organization's name is mandatory")
     @Size(min = 2, max = 20)
     @Pattern(regexp = "^[a-zA-Z0-9_-]{1,30}$", message = "Name must be alpha-numeric (plus: \"_\", \"-\") and 1 - 30 characters")
@@ -20,7 +20,7 @@ public class OrganizationEntity extends DistributedEntity {
     @OneToMany(mappedBy = "organization")
     private List<PersonEntity> organizationMembers;
 
-    @OneToMany
+    @OneToMany(mappedBy = "organization")
     private List<ConferenceRoomEntity> conferenceRooms;
 
     public OrganizationEntity(String name) {

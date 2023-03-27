@@ -36,9 +36,8 @@ public class AuthenticationController {
 
     @GetMapping("/logout")
     public ResponseEntity<ResponseDTO> logout(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        ResponseDTO responseDTO = new ResponseDTO();
         ResponseDTO response = authenticationService.logoutUser(token);
-        return ResponseEntity.ok(responseDTO);
+        return ResponseEntity.ok(response);
     }
 
 }

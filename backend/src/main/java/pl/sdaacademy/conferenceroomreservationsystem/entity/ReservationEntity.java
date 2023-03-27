@@ -12,12 +12,11 @@ import java.util.List;
 public class ReservationEntity extends DistributedEntity {
 
     @NotBlank(message = "Reservation name is mandatory")
-    @Size(min = 2, max = 20)
-    @Column(name = "reservation_name")
+    @Size(min = 2, max = 40)
+    @Column(name = "reservation_name", nullable = false)
     private String name;
 
-    @Size(min = 1)
-    @Column(name = "maximum_attendees", nullable = false)
+    @Column(name = "maximum_attendees")
     private Short maxAttendees;
 
     @Column(name = "is_all_day", nullable = false)
@@ -29,12 +28,14 @@ public class ReservationEntity extends DistributedEntity {
     @Column(name = "end_date_time") // can be null because all-day events exist
     private LocalDateTime endDateTime;
 
+    @Column(name = "color", nullable = false)
+    private String color;
+
     @OneToOne
     @JoinColumn(name = "event_organizer", nullable = false)
     private PersonEntity eventOrganizer;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "attendees")
     private List<PersonEntity> attendees;
 
     @ManyToOne
@@ -82,6 +83,14 @@ public class ReservationEntity extends DistributedEntity {
 
     public void setEndDateTime(LocalDateTime endDateTime) {
         this.endDateTime = endDateTime;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 
     public PersonEntity getEventOrganizer() {

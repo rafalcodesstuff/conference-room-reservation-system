@@ -17,7 +17,7 @@ public class PersonEntity extends DistributedEntity {
     @Size(min = 2, max = 50)
     @NotNull(message = "Username mustn't be null")
     @Pattern(regexp = "^[a-zA-Z0-9_]{1,30}$", message = "Name must be alpha-numeric (plus: \"_\") and max 30 characters")
-    @Column(name = "username", nullable = false)
+    @Column(name = "username", nullable = false, unique = true)
     private String username;
 
     @Size(max = 40)
@@ -42,7 +42,7 @@ public class PersonEntity extends DistributedEntity {
     private UserRoles role = UserRoles.MEMBER;
 
     @OneToMany
-    @JoinColumn(name = "reservation_id")
+    @JoinColumn(name = "attendees")
     private List<ReservationEntity> reservations;
 
     public PersonEntity(String username, String email, String password, OrganizationEntity organization) {
