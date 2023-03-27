@@ -13,6 +13,7 @@ export class RegisterComponent {
 
   userExistsError = false;
   registrationForm!: FormGroup;
+  sessionId: any = "";
 
   constructor(private userService: UserService, private formBuilder: FormBuilder, private router: Router) {
   }
@@ -39,10 +40,17 @@ export class RegisterComponent {
     }
 
     this.userService.register(user).subscribe({
+      next: (res) => {
+        this.sessionId = res.sessionId;
+
+        sessionStorage.setItem(
+          'token', this.sessionId
+        );
+        this.router.navigate(['/calendar'])
+      },
       error: () => {
         this.userExistsError = true
-      },
-      complete: () => this.router.navigate(['/calendar'])
+      }
     })
   }
 }

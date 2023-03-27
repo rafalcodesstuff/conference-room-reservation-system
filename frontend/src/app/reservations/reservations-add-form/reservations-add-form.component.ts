@@ -368,13 +368,12 @@ export class ReservationsAddFormComponent implements OnInit {
 
     let startDate = new Date(this.addReservationForm.get("startDate")?.value)
     let startDatetime = setMinutes(new Date(startDate), this.addReservationForm.get('startTime')?.value.minute ?? 0)
-    startDatetime = setHours(startDatetime, this.addReservationForm.get('startTime')?.value.hour ?? 0)
+    startDatetime = setHours(startDatetime, this.addReservationForm.get('startTime')?.value.hour + 1 ?? 0)
     
     let endDatetime = setMinutes(new Date(startDate), this.addReservationForm.get('endTime')?.value.minute ?? 0)
-    endDatetime = setHours(endDatetime, this.addReservationForm.get('endTime')?.value.hour ?? 0)
+    endDatetime = setHours(endDatetime, this.addReservationForm.get('endTime')?.value.hour + 1 ?? 0)
     
     let endDate = new Date(this.addReservationForm.get("endDate")?.value)
- // if all day event then add datetime else add date
     
     let endPostValue = (): Date => {
       if (isAllDay) {
@@ -384,7 +383,7 @@ export class ReservationsAddFormComponent implements OnInit {
         return startDate; 
       }
       else if (this.hasTimeValue) {
-        return startDate;
+        return endDatetime;
       }
       return startDate;
     }
