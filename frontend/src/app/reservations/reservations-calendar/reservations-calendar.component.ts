@@ -27,6 +27,9 @@ import {
 } from 'angular-calendar';
 import { EventColor } from 'calendar-utils';
 import { CalendarService } from '../calendar-service.service';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+
+import { ReservationResponse } from './response-reservation';
 
 const colors: Record<string, EventColor> = {
   red: {
@@ -99,16 +102,18 @@ export class ReservationsCalendarComponent {
   refresh = new Subject<void>();
 
   events: CalendarEvent[] = [
-    {
-      start: new Date("2023-03-16T11:00:00.000Z"),
-      end: new Date("2023-03-16T11:00:00.000Z"),
-      title: "asdf (All Day Event)",
-      allDay: true,
-      color: {
-        "primary": "#ad2121",
-        "secondary": "#FAE3E3"
-      }
-    }
+
+    // EXAMPLE EVENT
+    // {
+      // start: new Date("2023-03-16T11:00:00.000Z"),
+      // end: new Date("2023-03-16T11:00:00.000Z"),
+      // title: "asdf (All Day Event)",
+      // allDay: true,
+      // color: {
+      //   "primary": "#ad2121",
+      //   "secondary": "#FAE3E3"
+      // }
+    // }
   ];
 
   activeDayIsOpen: boolean = true;
@@ -116,14 +121,57 @@ export class ReservationsCalendarComponent {
   confirmed = false;
   announced = false;
   private subscription!: Subscription;
-  constructor(private modal: NgbModal, private reservationService: CalendarService, private changeDetectorRef: ChangeDetectorRef) { 
+  constructor(private modal: NgbModal, 
+              private reservationService: CalendarService, 
+              private changeDetectorRef: ChangeDetectorRef,
+              private http: HttpClient,
+  ) { 
+    // this loads calendar events from database
+    let getUserReservationsUrl = "http://localhost:8080/api/reservations/user/" + localStorage.getItem('username') 
+    this.http.get<Array<ReservationResponse>>(getUserReservationsUrl).subscribe({
+      next: (res) => {
+        res.forEach(reservation => {
+          let event: any = {
+            id: reservation.id,
+            title: reservation.name,
+            allDay: reservation.allDay,
+            start: new Date(reservation.startDateTime),
+            end: new Date(reservation.endDateTime),
+            color: colors[reservation.color],
+            eventOrganizer: reservation.eventOrganizer,
+            conferenceRoom: reservation.conferenceRoom
+          }
+
+          this.addEvent(event);
+        });
+        
+        this.resetValue(); // this refreshes the calendar
+      },
+    })
+
+    // this adds a new event to calendar and backend
     this.subscription = this.reservationService.reservationAddedAnnounced$.subscribe(
       reservation => {
         this.confirmed = true;
         this.announced = true;
 
-        this.addEvent(reservation);
-        this.resetValue();
+        http.post<ReservationResponse>("http://localhost:8080/api/reservations", {
+          name: reservation.title,
+          allDay: reservation.allDay,
+          startDateTime: reservation.start,
+          endDateTime: reservation.end,
+          color: reservation.color,
+          eventOrganizer: localStorage.getItem('username'),
+          conferenceRoom: reservation.conferenceRoom
+        }).subscribe({
+          next: (res) => {
+            reservation.id = res.id;
+            reservation.color = colors[reservation.color];
+
+            this.addEvent(reservation);
+            this.resetValue();
+          },
+        });
       }
     );
   }
@@ -200,7 +248,11 @@ export class ReservationsCalendarComponent {
   }
 
   deleteEvent(eventToDelete: CalendarEvent) {
-    this.events = this.events.filter((event) => event !== eventToDelete);
+    this.http.delete<boolean>("http://localhost:8080/api/reservations/" + eventToDelete.id).subscribe({
+      next: (res) => {
+        this.events = this.events.filter((event) => event !== eventToDelete);
+      },
+    });
   }
 
   setView(view: CalendarView) {

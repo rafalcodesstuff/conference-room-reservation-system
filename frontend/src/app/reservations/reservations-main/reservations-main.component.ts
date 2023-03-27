@@ -11,6 +11,7 @@ import { Component } from '@angular/core';
 export class ReservationsMainComponent {
   switchFormType = "add-form";
   navActive = "add-form";
+  greetingUser = localStorage.getItem('username');
 
   constructor(private http: HttpClient, private userService: UserService, private router: Router) {}
 
@@ -23,6 +24,7 @@ export class ReservationsMainComponent {
     this.http.get('http://localhost:8080/api/logout').subscribe({
       next: (res) => {
         sessionStorage.removeItem('token');
+        localStorage.removeItem('username');
         this.router.navigate(['/login']);
       },
     })

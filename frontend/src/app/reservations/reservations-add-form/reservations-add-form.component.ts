@@ -98,7 +98,7 @@ export class ReservationsAddFormComponent implements OnInit {
   } 
 
   addReservationForm!: FormGroup;
-  reservation!: CalendarEvent;
+  reservation!: any;
 
   constructor(
     private formBuilder: FormBuilder, 
@@ -388,16 +388,15 @@ export class ReservationsAddFormComponent implements OnInit {
       return startDate;
     }
   
-    const reservation = {
+    const reservationData = {
       start: isAllDay ? startDate : startDatetime,
       end: endPostValue(),
       title: this.addReservationForm.get("reservationName")?.value + (isAllDay ? " (All Day Event)" : ''),
       allDay: isAllDay,
-      color: { ...colors[this.addReservationForm.get("color")?.value] },
-      // resizeable ??
-      // draggable ??
+      color: this.addReservationForm.get("color")?.value,
+      conferenceRoom: this.addReservationForm.get("conferenceRoomName")?.value
     }
 
-    this.reservationService.announceAddedReservation(reservation);
+    this.reservationService.announceAddedReservation(reservationData);
   }
 }

@@ -43,6 +43,8 @@ export class RegisterComponent {
       next: (res) => {
         this.sessionId = res.sessionId;
 
+        localStorage.setItem('username', this.registrationForm.get("username")?.value);
+
         sessionStorage.setItem(
           'token', this.sessionId
         );

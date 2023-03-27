@@ -30,6 +30,8 @@ export class LoginComponent {
       next: (res) => {
         this.sessionId = res.sessionId;
 
+        localStorage.setItem('username', this.model.username);
+
         sessionStorage.setItem(
           'token', this.sessionId
         );
