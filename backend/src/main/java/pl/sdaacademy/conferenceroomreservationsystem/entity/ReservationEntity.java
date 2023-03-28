@@ -35,7 +35,7 @@ public class ReservationEntity extends DistributedEntity {
     @JoinColumn(name = "event_organizer", nullable = false)
     private PersonEntity eventOrganizer;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER) // type eager because tests weren't working without it
     private List<PersonEntity> attendees;
 
     @ManyToOne

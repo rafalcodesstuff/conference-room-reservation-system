@@ -44,9 +44,6 @@ public class OrganizationIntegrationTest {
     private final String baseUrl = "http://localhost:";
 
     @Autowired
-    private TestRestTemplate restTemplate;
-
-    @Autowired
     private OrganizationRepository repository;
 
     @LocalServerPort

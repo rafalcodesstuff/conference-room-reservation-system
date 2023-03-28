@@ -17,10 +17,10 @@ public class OrganizationEntity extends DistributedEntity {
     @Pattern(regexp = "^[a-zA-Z0-9_-]{1,30}$", message = "Name must be alpha-numeric (plus: \"_\", \"-\") and 1 - 30 characters")
     private String name;
 
-    @OneToMany(mappedBy = "organization")
+    @OneToMany(mappedBy = "organization", fetch = FetchType.EAGER) // type eager because tests weren't working without it
     private List<PersonEntity> organizationMembers;
 
-    @OneToMany(mappedBy = "organization")
+    @OneToMany(mappedBy = "organization", fetch = FetchType.EAGER) // type eager because tests weren't working without it
     private List<ConferenceRoomEntity> conferenceRooms;
 
     public OrganizationEntity(String name) {

@@ -27,7 +27,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-@ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
 @TestPropertySource(locations = "classpath:application.properties")
 public class TestOrganizationService {
@@ -35,24 +34,8 @@ public class TestOrganizationService {
     @Autowired
     private OrganizationService organizationService;
 
-    @BeforeEach
-    void setup() {
-//        OrganizationEntity org1 = new OrganizationEntity("IBM");
-//        org1.setId(1);
-//        org1.setCreated(LocalDateTime.now());
-//        org1.setModified(LocalDateTime.now());
-//
-//        OrganizationEntity org2 = new OrganizationEntity("Motorola");
-//        org2.setId(2);
-//        org2.setCreated(LocalDateTime.now());
-//        org2.setModified(LocalDateTime.now());
-//
-//        repository.save(org1);
-//        repository.save(org2);
-    }
-
     @Test
-    void OrganizationCRUDL() {
+    void testOrganizationCRUDL() {
         OrganizationDTO dto = new OrganizationDTO();
         dto.setName("TestOrganization");
 
@@ -65,5 +48,25 @@ public class TestOrganizationService {
         assertThat(organizationById).isNotNull();
         assertThat(organizationById.getName()).contains(savedOrganization.getName());
 
+        // verify list
+        final List<OrganizationDTO> organizations = organizationService.list();
+        assertThat(organizations).isNotNull();
+        assertThat(organizations).hasSize(1);
+
+        // verify update
+        savedOrganization.setName("UpdatedOrganization");
+
+        final OrganizationDTO updatedOrganization = organizationService.save(savedOrganization);
+        assertThat(updatedOrganization).isNotNull();
+        assertThat(updatedOrganization.getModified()).isAfter(savedOrganization.getModified());
+        assertThat(updatedOrganization.getName()).isEqualTo(savedOrganization.getName());
+
+        // verify delete
+        final Boolean deleted = organizationService.delete(savedOrganization.getId());
+        assertThat(deleted).isTrue();
+        assertThat(organizationService.getById(savedOrganization.getId())).isNull();
+
+        // try to delete something that does not exist
+        assertThat(organizationService.delete(123456789)).isFalse();
     }
 }

@@ -20,7 +20,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
-@ActiveProfiles("test")
 @TestPropertySource(locations = "classpath:application.properties")
 public class TestPersonService {
 
@@ -52,7 +51,6 @@ public class TestPersonService {
 
         // verify saving
         final PersonDTO savedPerson = service.save(dto);
-
         assertThat(savedPerson).isNotNull();
         assertThat(savedPerson.getId()).isNotNull();
         assertThat(savedPerson.getCreated()).isNotNull();
