@@ -1,5 +1,7 @@
 package pl.sdaacademy.conferenceroomreservationsystem.controller;
 
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.sdaacademy.conferenceroomreservationsystem.api.AbstractCRUDLApi;
 import pl.sdaacademy.conferenceroomreservationsystem.dto.AbstractBaseDTO;
@@ -14,17 +16,17 @@ abstract public class AbstractCRUDLController<ENTITY extends DistributedEntity, 
         this.api = api;
     }
 
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public DTO save(@RequestBody DTO dto) {
         return api.save(dto);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public DTO getById(@PathVariable Integer id) {
         return api.getById(id);
     }
 
-    @GetMapping("/list")
+    @GetMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<DTO> list() {
         return api.list();
     }

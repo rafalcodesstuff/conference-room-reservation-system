@@ -33,15 +33,18 @@ public class SessionFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
 
         String sessionId = request.getHeader(HttpHeaders.AUTHORIZATION);
+
         if (sessionId == null || sessionId.length() == 0) {
             filterChain.doFilter(request, response);
             return;
         }
-        if (sessionId.startsWith("Basic ")) {
-            filterChain.doFilter(request, response);
-            return;
+
+        if (sessionId.startsWith("Bearer ")) {
+            sessionId = sessionId.replace("Bearer ", "");
         }
+
         String username = sessionRegistry.getUsernameForSession(sessionId);
+
         if (username == null) {
             filterChain.doFilter(request, response);
             return;

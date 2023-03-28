@@ -1,26 +1,45 @@
 package pl.sdaacademy.conferenceroomreservationsystem.service;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import pl.sdaacademy.conferenceroomreservationsystem.controller.AuthenticationController;
 import pl.sdaacademy.conferenceroomreservationsystem.dto.OrganizationDTO;
 import pl.sdaacademy.conferenceroomreservationsystem.entity.OrganizationEntity;
+import pl.sdaacademy.conferenceroomreservationsystem.repository.OrganizationRepository;
 import pl.sdaacademy.conferenceroomreservationsystem.user.UserRoles;
 import pl.sdaacademy.conferenceroomreservationsystem.dto.PersonDTO;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
+@TestPropertySource(locations = "classpath:application.properties")
 public class TestPersonService {
 
     @Autowired
     public PersonService service;
+
+    @Autowired
+    private OrganizationRepository repository;
+
+    @BeforeEach
+    void setup() {
+        OrganizationEntity organization = new OrganizationEntity();
+        organization.setId(1);
+        organization.setName("TestOrganization");
+        organization.setCreated(LocalDateTime.now());
+        organization.setModified(LocalDateTime.now());
+
+        repository.save(organization);
+    }
 
     @Test
     void testPersonCRUDL() {
@@ -29,7 +48,7 @@ public class TestPersonService {
         dto.setEmail("asdf@qwerty.com");
         dto.setPassword("P4$$word");
         dto.setRole(UserRoles.MEMBER);
-        dto.setOrganization("Google");
+        dto.setOrganization("TestOrganization");
 
         // verify saving
         final PersonDTO savedPerson = service.save(dto);
@@ -42,8 +61,7 @@ public class TestPersonService {
         assertThat(savedPerson.getEmail()).isNotNull();
         assertThat(savedPerson.getPassword()).isNotNull();
         assertThat(savedPerson.getRole()).isNotNull();
-
-//        assertThat(savedPerson.getOrganization()).isNotNull();
+        assertThat(savedPerson.getOrganization()).isNotNull();
 
         // verify read
         final PersonDTO personById = service.getById(savedPerson.getId());

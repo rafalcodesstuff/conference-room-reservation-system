@@ -42,17 +42,6 @@ public class SecurityConfiguration {
 
 
     @Bean
-    public UserDetailsService userDetailsService() throws Exception {
-        InMemoryUserDetailsManager testAdmin = new InMemoryUserDetailsManager();
-        testAdmin.createUser(User.withDefaultPasswordEncoder()
-                .username("TestAdmin")
-                .password("admin")
-                .roles("ADMIN")
-                .build());
-        return testAdmin;
-    }
-
-    @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 
@@ -70,10 +59,6 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http = http.cors().and().csrf().disable();
-
-        // for testing
-//        http.authorizeHttpRequests().requestMatchers("/**").hasRole("ADMIN");
-
 
         http = http.exceptionHandling().authenticationEntryPoint(
                 ((request, response, authException) -> response.sendError(

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import pl.sdaacademy.conferenceroomreservationsystem.exception.PersonAlreadyExistsException;
 import pl.sdaacademy.conferenceroomreservationsystem.exception.PersonNotFoundException;
 import pl.sdaacademy.conferenceroomreservationsystem.exception.RecordAlreadyExistsException;
+import pl.sdaacademy.conferenceroomreservationsystem.exception.RecordNotFoundException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,13 +39,8 @@ public class ControllersExceptionHandler {
     ResponseEntity<String> handlePersonNotFoundException(PersonNotFoundException ex) {
         return new ResponseEntity<>("Person Doesn't Exist", new HttpHeaders(), HttpStatus.NOT_FOUND);
     }
-//    @ExceptionHandler(RecordNotFoundException.class)
-//    ResponseEntity<String> handleRecordNotFoundException(RecordNotFoundException ex) {
-//        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
-//    }
-
-    @ExceptionHandler(RecordAlreadyExistsException.class)
-    ResponseEntity<String> handleRecordAlreadyExistsException(RecordAlreadyExistsException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+    @ExceptionHandler(RecordNotFoundException.class)
+    ResponseEntity<String> handleRecordNotFoundException(RecordNotFoundException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 }
