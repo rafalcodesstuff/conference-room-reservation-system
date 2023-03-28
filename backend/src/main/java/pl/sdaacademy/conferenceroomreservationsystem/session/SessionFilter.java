@@ -31,12 +31,16 @@ public class SessionFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+
         String sessionId = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (sessionId == null || sessionId.length() == 0) {
             filterChain.doFilter(request, response);
             return;
         }
-
+        if (sessionId.startsWith("Basic ")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         String username = sessionRegistry.getUsernameForSession(sessionId);
         if (username == null) {
             filterChain.doFilter(request, response);

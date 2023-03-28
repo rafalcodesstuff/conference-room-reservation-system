@@ -24,10 +24,12 @@ public class OrganizationEntity extends DistributedEntity {
     private List<ConferenceRoomEntity> conferenceRooms;
 
     public OrganizationEntity(String name) {
+        super();
         this.name = name;
     }
 
     public OrganizationEntity() {
+        super();
     }
 
     public String getName() {

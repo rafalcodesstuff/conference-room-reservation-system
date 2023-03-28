@@ -2,7 +2,7 @@ package pl.sdaacademy.conferenceroomreservationsystem.configuration;
 
 //@Configuration
 //@EnableWebSecurity
-public class WebSecurityConfig {
+public class SDA_WebSecurityConfig {
 
 //    @Bean
 //    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

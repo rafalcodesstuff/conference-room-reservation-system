@@ -2,7 +2,12 @@ package pl.sdaacademy.conferenceroomreservationsystem.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import pl.sdaacademy.conferenceroomreservationsystem.controller.AuthenticationController;
+import pl.sdaacademy.conferenceroomreservationsystem.dto.OrganizationDTO;
+import pl.sdaacademy.conferenceroomreservationsystem.entity.OrganizationEntity;
 import pl.sdaacademy.conferenceroomreservationsystem.user.UserRoles;
 import pl.sdaacademy.conferenceroomreservationsystem.dto.PersonDTO;
 
@@ -11,6 +16,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
+@ActiveProfiles("test")
 public class TestPersonService {
 
     @Autowired
@@ -23,6 +29,7 @@ public class TestPersonService {
         dto.setEmail("asdf@qwerty.com");
         dto.setPassword("P4$$word");
         dto.setRole(UserRoles.MEMBER);
+        dto.setOrganization("Google");
 
         // verify saving
         final PersonDTO savedPerson = service.save(dto);
@@ -36,9 +43,7 @@ public class TestPersonService {
         assertThat(savedPerson.getPassword()).isNotNull();
         assertThat(savedPerson.getRole()).isNotNull();
 
-        // TODO need to combine them with database
 //        assertThat(savedPerson.getOrganization()).isNotNull();
-//        assertThat(savedPerson.getReservations()).isNotNull();
 
         // verify read
         final PersonDTO personById = service.getById(savedPerson.getId());
@@ -51,9 +56,6 @@ public class TestPersonService {
                     PersonDTO::getPassword,
                     PersonDTO::getRole
 
-                    // TODO this needs further work
-//                  PersonDTO::getOrganization,
-//                  PersonDTO::getReservations,
                 ).contains(
                     savedPerson.getId(),
                     savedPerson.getUsername(),
@@ -61,9 +63,6 @@ public class TestPersonService {
                     savedPerson.getPassword(),
                     savedPerson.getRole()
 
-                    // TODO this needs further work
-//                  savedPerson.getOrganization(),
-//                  savedPerson.getReservations()
                 );
 
         // verify list
@@ -76,7 +75,6 @@ public class TestPersonService {
         savedPerson.setEmail("qwerty@asdf.com");
         savedPerson.setPassword("drow$$4P");
         savedPerson.setRole(UserRoles.LEADER);
-        // TODO needs to verify reservations and organization
 
         final PersonDTO updatedPerson = service.save(savedPerson);
         assertThat(updatedPerson).isNotNull();
@@ -88,7 +86,6 @@ public class TestPersonService {
         assertThat(updatedPerson.getPassword()).isEqualTo(savedPerson.getPassword());
         assertThat(updatedPerson.getRole()).isEqualTo(savedPerson.getRole());
 
-        // TODO needs to verify reservations and organization
 
         // verify delete
         final Boolean deleted = service.delete(savedPerson.getId());
