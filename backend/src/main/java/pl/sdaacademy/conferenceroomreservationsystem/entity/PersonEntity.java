@@ -2,9 +2,6 @@ package pl.sdaacademy.conferenceroomreservationsystem.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 import pl.sdaacademy.conferenceroomreservationsystem.user.UserRoles;
 
 import java.util.List;

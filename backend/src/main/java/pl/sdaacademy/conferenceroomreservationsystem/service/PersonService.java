@@ -2,15 +2,15 @@ package pl.sdaacademy.conferenceroomreservationsystem.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.sdaacademy.conferenceroomreservationsystem.entity.OrganizationEntity;
-import pl.sdaacademy.conferenceroomreservationsystem.exception.RecordNotFoundException;
-import pl.sdaacademy.conferenceroomreservationsystem.repository.OrganizationRepository;
-import pl.sdaacademy.conferenceroomreservationsystem.user.UserRoles;
 import pl.sdaacademy.conferenceroomreservationsystem.api.PersonApi;
 import pl.sdaacademy.conferenceroomreservationsystem.converter.PersonDTOConverter;
 import pl.sdaacademy.conferenceroomreservationsystem.dto.PersonDTO;
+import pl.sdaacademy.conferenceroomreservationsystem.entity.OrganizationEntity;
 import pl.sdaacademy.conferenceroomreservationsystem.entity.PersonEntity;
+import pl.sdaacademy.conferenceroomreservationsystem.exception.RecordNotFoundException;
+import pl.sdaacademy.conferenceroomreservationsystem.repository.OrganizationRepository;
 import pl.sdaacademy.conferenceroomreservationsystem.repository.PersonRepository;
+import pl.sdaacademy.conferenceroomreservationsystem.user.UserRoles;
 
 import java.util.Optional;
 
@@ -36,7 +36,7 @@ public class PersonService extends AbstractCRUDLService<PersonEntity, PersonDTO>
             entity.setPassword(dto.getPassword());
 
             OrganizationEntity organization = organizationRepository.findByName(dto.getOrganization())
-                            .orElseThrow(() -> new RecordNotFoundException("Failed to find Organization: " + dto.getOrganization()));
+                    .orElseThrow(() -> new RecordNotFoundException("Failed to find Organization: " + dto.getOrganization()));
             entity.setOrganization(organization);
 
             entity.setRole(UserRoles.MEMBER);

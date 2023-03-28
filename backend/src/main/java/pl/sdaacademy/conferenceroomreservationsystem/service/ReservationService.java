@@ -84,9 +84,9 @@ public class ReservationService extends AbstractCRUDLService<ReservationEntity, 
             }
             if (dto.getEventOrganizer() != null || dto.getConferenceRoom() != null) {
                 PersonEntity person = personRepository.findPersonByUsername(dto.getEventOrganizer())
-                    .orElseThrow(() -> new RecordNotFoundException(
-                            "Failed to find user with username: " + dto.getEventOrganizer()
-                    ));
+                        .orElseThrow(() -> new RecordNotFoundException(
+                                "Failed to find user with username: " + dto.getEventOrganizer()
+                        ));
 
                 if (dto.getEventOrganizer() != null) {
                     entity.setEventOrganizer(person);

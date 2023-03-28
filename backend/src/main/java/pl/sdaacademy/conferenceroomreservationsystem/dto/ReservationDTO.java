@@ -1,6 +1,5 @@
 package pl.sdaacademy.conferenceroomreservationsystem.dto;
 
-import pl.sdaacademy.conferenceroomreservationsystem.entity.ConferenceRoomEntity;
 import pl.sdaacademy.conferenceroomreservationsystem.entity.PersonEntity;
 
 import java.time.LocalDateTime;

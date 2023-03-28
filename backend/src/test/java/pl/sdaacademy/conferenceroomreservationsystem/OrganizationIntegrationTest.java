@@ -1,31 +1,15 @@
 package pl.sdaacademy.conferenceroomreservationsystem;
 
-import io.restassured.RestAssured;
-import io.restassured.filter.Filter;
-import io.restassured.http.ContentType;
-import io.restassured.internal.RestAssuredResponseOptionsImpl;
-import io.restassured.parsing.Parser;
-import io.restassured.response.Response;
-import org.aspectj.weaver.ast.Or;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.web.WebAppConfiguration;
 import pl.sdaacademy.conferenceroomreservationsystem.dto.OrganizationDTO;
 import pl.sdaacademy.conferenceroomreservationsystem.entity.OrganizationEntity;
 import pl.sdaacademy.conferenceroomreservationsystem.repository.OrganizationRepository;
-import pl.sdaacademy.conferenceroomreservationsystem.service.OrganizationService;
 
 import java.time.LocalDateTime;
 
@@ -75,6 +59,7 @@ public class OrganizationIntegrationTest {
                 .body(notNullValue())
                 .body("list.size()", is(2));
     }
+
     @Test
     void shouldReturnOrganizationById() {
         given()

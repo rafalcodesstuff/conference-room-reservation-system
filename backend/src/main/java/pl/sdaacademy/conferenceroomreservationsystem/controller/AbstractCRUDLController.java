@@ -1,10 +1,6 @@
 package pl.sdaacademy.conferenceroomreservationsystem.controller;
 
-import jakarta.validation.ValidationException;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pl.sdaacademy.conferenceroomreservationsystem.api.AbstractCRUDLApi;
 import pl.sdaacademy.conferenceroomreservationsystem.dto.AbstractBaseDTO;
@@ -20,7 +16,7 @@ abstract public class AbstractCRUDLController<ENTITY extends DistributedEntity, 
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public DTO save(@RequestBody @Validated DTO dto) {
+    public DTO save(@RequestBody DTO dto) {
         return api.save(dto);
     }
 

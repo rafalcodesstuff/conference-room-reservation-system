@@ -1,6 +1,5 @@
 package pl.sdaacademy.conferenceroomreservationsystem.controller;
 
-import jakarta.validation.ValidationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +31,6 @@ public class ControllersExceptionHandler {
         });
         return new ResponseEntity<>(ex.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
     }
-
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     ResponseEntity<String> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {

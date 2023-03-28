@@ -7,9 +7,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.sdaacademy.conferenceroomreservationsystem.dto.PersonDTO;
 import pl.sdaacademy.conferenceroomreservationsystem.dto.ResponseDTO;
-import pl.sdaacademy.conferenceroomreservationsystem.dto.UserDTO;
-import pl.sdaacademy.conferenceroomreservationsystem.session.SessionRegistry;
+import pl.sdaacademy.conferenceroomreservationsystem.dto.UserSessionDTO;
 import pl.sdaacademy.conferenceroomreservationsystem.exception.PersonAlreadyExistsException;
+import pl.sdaacademy.conferenceroomreservationsystem.session.SessionRegistry;
 
 @Service
 public class AuthenticationService {
@@ -25,7 +25,7 @@ public class AuthenticationService {
         this.personService = personService;
     }
 
-    public ResponseDTO loginUser(UserDTO user) {
+    public ResponseDTO loginUser(UserSessionDTO user) {
         manager.authenticate(
                 new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
         );
@@ -38,7 +38,9 @@ public class AuthenticationService {
 
     public ResponseDTO registerUser(PersonDTO user) {
         personService.getPersonByUsername(user.getUsername()).ifPresent(
-                (arg) -> { throw new PersonAlreadyExistsException(); }
+                (arg) -> {
+                    throw new PersonAlreadyExistsException();
+                }
         );
 
         String encryptedPassword = new BCryptPasswordEncoder(10).encode(user.getPassword());

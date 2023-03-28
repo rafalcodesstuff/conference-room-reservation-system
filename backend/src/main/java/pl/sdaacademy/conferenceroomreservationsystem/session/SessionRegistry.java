@@ -6,7 +6,6 @@ import pl.sdaacademy.conferenceroomreservationsystem.service.SessionStorageServi
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-import java.util.HashMap;
 import java.util.UUID;
 
 @Component

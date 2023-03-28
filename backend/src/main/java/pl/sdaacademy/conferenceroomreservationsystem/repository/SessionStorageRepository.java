@@ -9,6 +9,8 @@ import java.util.Optional;
 @Repository
 public interface SessionStorageRepository extends JpaRepository<SessionStorageEntity, Integer> {
     Optional<SessionStorageEntity> findByUsername(String username);
+
     Optional<SessionStorageEntity> findBySessionId(String sessionId);
+
     void deleteBySessionId(String sessionId);
 }

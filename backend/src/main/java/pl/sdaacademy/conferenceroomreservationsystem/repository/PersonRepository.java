@@ -5,7 +5,6 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 import pl.sdaacademy.conferenceroomreservationsystem.entity.PersonEntity;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 

@@ -34,9 +34,12 @@ public class ConferenceRoomService extends AbstractCRUDLService<ConferenceRoomEn
             OrganizationEntity organization = organizationRepository.findByName(dto.getOrganization())
                     .orElseThrow(() -> new RecordNotFoundException("Failed to find Organization: " + dto.getOrganization()));
 
+            // checks if conference room exists by the username and organization name
             // needs extra validation, because the dto doesn't have this data
             conferenceRoomRepository.findByNameAndOrganization(dto.getName(), organization).ifPresent(
-                    (arg) -> { throw new RecordAlreadyExistsException("Conference room already exists for this organization"); }
+                    (arg) -> {
+                        throw new RecordAlreadyExistsException("Conference room already exists for this organization");
+                    }
             );
 
             entity.setName(dto.getName());

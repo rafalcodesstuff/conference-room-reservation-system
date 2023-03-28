@@ -1,8 +1,7 @@
 package pl.sdaacademy.conferenceroomreservationsystem.dto;
 
-import pl.sdaacademy.conferenceroomreservationsystem.user.UserRoles;
-import pl.sdaacademy.conferenceroomreservationsystem.entity.OrganizationEntity;
 import pl.sdaacademy.conferenceroomreservationsystem.entity.ReservationEntity;
+import pl.sdaacademy.conferenceroomreservationsystem.user.UserRoles;
 
 import java.util.List;
 

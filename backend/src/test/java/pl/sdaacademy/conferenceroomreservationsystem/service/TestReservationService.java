@@ -5,21 +5,21 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
-import pl.sdaacademy.conferenceroomreservationsystem.dto.PersonDTO;
 import pl.sdaacademy.conferenceroomreservationsystem.dto.ReservationDTO;
 import pl.sdaacademy.conferenceroomreservationsystem.entity.ConferenceRoomEntity;
 import pl.sdaacademy.conferenceroomreservationsystem.entity.OrganizationEntity;
 import pl.sdaacademy.conferenceroomreservationsystem.entity.PersonEntity;
+import pl.sdaacademy.conferenceroomreservationsystem.exception.RecordNotFoundException;
 import pl.sdaacademy.conferenceroomreservationsystem.repository.ConferenceRoomRepository;
 import pl.sdaacademy.conferenceroomreservationsystem.repository.OrganizationRepository;
 import pl.sdaacademy.conferenceroomreservationsystem.repository.PersonRepository;
-import pl.sdaacademy.conferenceroomreservationsystem.repository.ReservationRepository;
 import pl.sdaacademy.conferenceroomreservationsystem.user.UserRoles;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @TestPropertySource(locations = "classpath:application.properties")
@@ -144,7 +144,7 @@ public class TestReservationService {
         // verify delete
         final Boolean deleted = reservationService.delete(savedReservation.getId());
         assertThat(deleted).isTrue();
-        assertThat(reservationService.getById(savedReservation.getId())).isNull();
+        assertThrows(RecordNotFoundException.class, () -> reservationService.getById(savedReservation.getId()));
 
         // try to delete something that does not exist
         assertThat(reservationService.delete(123456789)).isFalse();

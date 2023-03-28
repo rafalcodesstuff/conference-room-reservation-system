@@ -19,10 +19,12 @@ public class OrganizationEntity extends DistributedEntity {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "organization", fetch = FetchType.EAGER) // type eager because tests weren't working without it
+    @OneToMany(mappedBy = "organization", fetch = FetchType.EAGER)
+    // type eager because tests weren't working without it
     private List<PersonEntity> organizationMembers;
 
-    @OneToMany(mappedBy = "organization", fetch = FetchType.EAGER) // type eager because tests weren't working without it
+    @OneToMany(mappedBy = "organization", fetch = FetchType.EAGER)
+    // type eager because tests weren't working without it
     private List<ConferenceRoomEntity> conferenceRooms;
 
     public OrganizationEntity(String name) {

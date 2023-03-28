@@ -8,7 +8,6 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import pl.sdaacademy.conferenceroomreservationsystem.converter.PersonDTOConverter;
-import pl.sdaacademy.conferenceroomreservationsystem.dto.OrganizationDTO;
 import pl.sdaacademy.conferenceroomreservationsystem.dto.PersonDTO;
 import pl.sdaacademy.conferenceroomreservationsystem.entity.OrganizationEntity;
 import pl.sdaacademy.conferenceroomreservationsystem.entity.PersonEntity;
@@ -20,7 +19,6 @@ import java.time.LocalDateTime;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
-import static org.hamcrest.Matchers.equalTo;
 
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
@@ -80,6 +78,7 @@ public class PersonIntegrationTest {
                 .body(notNullValue())
                 .body("list.size()", is(1));
     }
+
     @Test
     void shouldReturnPersonById() {
         given()

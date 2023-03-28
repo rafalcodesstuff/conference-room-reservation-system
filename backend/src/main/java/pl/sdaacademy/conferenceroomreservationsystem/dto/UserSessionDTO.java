@@ -1,6 +1,6 @@
 package pl.sdaacademy.conferenceroomreservationsystem.dto;
 
-public class UserDTO {
+public class UserSessionDTO {
     private String username;
     private String password;
 

@@ -8,7 +8,6 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import pl.sdaacademy.conferenceroomreservationsystem.converter.ReservationDTOConverter;
-import pl.sdaacademy.conferenceroomreservationsystem.dto.PersonDTO;
 import pl.sdaacademy.conferenceroomreservationsystem.dto.ReservationDTO;
 import pl.sdaacademy.conferenceroomreservationsystem.entity.ConferenceRoomEntity;
 import pl.sdaacademy.conferenceroomreservationsystem.entity.OrganizationEntity;
@@ -18,14 +17,12 @@ import pl.sdaacademy.conferenceroomreservationsystem.repository.ConferenceRoomRe
 import pl.sdaacademy.conferenceroomreservationsystem.repository.OrganizationRepository;
 import pl.sdaacademy.conferenceroomreservationsystem.repository.PersonRepository;
 import pl.sdaacademy.conferenceroomreservationsystem.repository.ReservationRepository;
-import pl.sdaacademy.conferenceroomreservationsystem.service.ReservationService;
 import pl.sdaacademy.conferenceroomreservationsystem.user.UserRoles;
 
 import java.time.LocalDateTime;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
-import static org.hamcrest.Matchers.equalTo;
 
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,

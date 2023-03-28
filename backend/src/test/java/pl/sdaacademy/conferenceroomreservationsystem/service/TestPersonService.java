@@ -3,21 +3,19 @@ package pl.sdaacademy.conferenceroomreservationsystem.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
-import pl.sdaacademy.conferenceroomreservationsystem.controller.AuthenticationController;
-import pl.sdaacademy.conferenceroomreservationsystem.dto.OrganizationDTO;
+import pl.sdaacademy.conferenceroomreservationsystem.dto.PersonDTO;
 import pl.sdaacademy.conferenceroomreservationsystem.entity.OrganizationEntity;
+import pl.sdaacademy.conferenceroomreservationsystem.exception.RecordNotFoundException;
 import pl.sdaacademy.conferenceroomreservationsystem.repository.OrganizationRepository;
 import pl.sdaacademy.conferenceroomreservationsystem.user.UserRoles;
-import pl.sdaacademy.conferenceroomreservationsystem.dto.PersonDTO;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @TestPropertySource(locations = "classpath:application.properties")
@@ -66,18 +64,18 @@ public class TestPersonService {
         assertThat(personById).isNotNull();
         assertThat(personById)
                 .extracting(
-                    PersonDTO::getId,
-                    PersonDTO::getUsername,
-                    PersonDTO::getEmail,
-                    PersonDTO::getPassword,
-                    PersonDTO::getRole
+                        PersonDTO::getId,
+                        PersonDTO::getUsername,
+                        PersonDTO::getEmail,
+                        PersonDTO::getPassword,
+                        PersonDTO::getRole
 
                 ).contains(
-                    savedPerson.getId(),
-                    savedPerson.getUsername(),
-                    savedPerson.getEmail(),
-                    savedPerson.getPassword(),
-                    savedPerson.getRole()
+                        savedPerson.getId(),
+                        savedPerson.getUsername(),
+                        savedPerson.getEmail(),
+                        savedPerson.getPassword(),
+                        savedPerson.getRole()
 
                 );
 
@@ -106,7 +104,8 @@ public class TestPersonService {
         // verify delete
         final Boolean deleted = service.delete(savedPerson.getId());
         assertThat(deleted).isTrue();
-        assertThat(service.getById(savedPerson.getId())).isNull();
+        assertThrows(RecordNotFoundException.class, () -> service.getById(savedPerson.getId()));
+
 
         // try to delete something that does not exist
         assertThat(service.delete(123456789)).isFalse();

@@ -1,6 +1,5 @@
 package pl.sdaacademy.conferenceroomreservationsystem.dto;
 
-import pl.sdaacademy.conferenceroomreservationsystem.converter.ConferenceRoomDTOConverter;
 import pl.sdaacademy.conferenceroomreservationsystem.converter.ReservationDTOConverter;
 import pl.sdaacademy.conferenceroomreservationsystem.entity.OrganizationEntity;
 import pl.sdaacademy.conferenceroomreservationsystem.entity.ReservationEntity;
