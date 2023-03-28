@@ -3,6 +3,7 @@ package pl.sdaacademy.conferenceroomreservationsystem.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import org.springframework.lang.NonNull;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ public class ConferenceRoomEntity extends DistributedEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @NonNull
     @Column(name = "amount_of_spots", nullable = false)
     private Integer amountOfSpots;
 

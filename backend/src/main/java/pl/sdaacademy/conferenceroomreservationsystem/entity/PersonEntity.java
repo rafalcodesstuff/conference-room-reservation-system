@@ -13,14 +13,13 @@ import java.util.List;
 @Table(name = "person")
 public class PersonEntity extends DistributedEntity {
 
-    @NotBlank(message = "Person's name is mandatory")
     @Size(min = 2, max = 50)
     @NotNull(message = "Username mustn't be null")
+    @NotBlank
     @Pattern(regexp = "^[a-zA-Z0-9_]{1,30}$", message = "Name must be alpha-numeric (plus: \"_\") and max 30 characters")
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
-    @Size(max = 40)
     @NotBlank
     @NotNull(message = "Email mustn't be null")
     @Email

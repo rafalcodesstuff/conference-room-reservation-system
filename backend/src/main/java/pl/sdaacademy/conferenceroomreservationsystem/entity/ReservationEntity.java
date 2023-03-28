@@ -3,6 +3,7 @@ package pl.sdaacademy.conferenceroomreservationsystem.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import org.springframework.lang.NonNull;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 @Table(name = "reservation")
 public class ReservationEntity extends DistributedEntity {
 
+    @NonNull
     @NotBlank(message = "Reservation name is mandatory")
     @Size(min = 2, max = 40)
     @Column(name = "reservation_name", nullable = false)
@@ -19,18 +21,22 @@ public class ReservationEntity extends DistributedEntity {
     @Column(name = "maximum_attendees")
     private Short maxAttendees;
 
+    @NonNull
     @Column(name = "is_all_day", nullable = false)
     private Boolean isAllDay;
 
+    @NonNull
     @Column(name = "start_date_time", nullable = false)
     private LocalDateTime startDateTime;
 
     @Column(name = "end_date_time") // can be null because all-day events exist
     private LocalDateTime endDateTime;
 
+    @NonNull
     @Column(name = "color", nullable = false)
     private String color;
 
+    @NonNull
     @OneToOne
     @JoinColumn(name = "event_organizer", nullable = false)
     private PersonEntity eventOrganizer;
@@ -38,6 +44,7 @@ public class ReservationEntity extends DistributedEntity {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER) // type eager because tests weren't working without it
     private List<PersonEntity> attendees;
 
+    @NonNull
     @ManyToOne
     @JoinColumn(name = "conference_room", nullable = false)
     private ConferenceRoomEntity conferenceRoom;

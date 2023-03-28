@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import org.springframework.lang.NonNull;
 
 import java.util.List;
 
@@ -11,10 +12,11 @@ import java.util.List;
 @Table(name = "organization")
 public class OrganizationEntity extends DistributedEntity {
 
-    @Column(name = "name", nullable = false, unique = true)
+    @NonNull
     @NotBlank(message = "Organization's name is mandatory")
     @Size(min = 2, max = 20)
     @Pattern(regexp = "^[a-zA-Z0-9_-]{1,30}$", message = "Name must be alpha-numeric (plus: \"_\", \"-\") and 1 - 30 characters")
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
     @OneToMany(mappedBy = "organization", fetch = FetchType.EAGER) // type eager because tests weren't working without it

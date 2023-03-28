@@ -8,6 +8,7 @@ import pl.sdaacademy.conferenceroomreservationsystem.api.AbstractCRUDLApi;
 import pl.sdaacademy.conferenceroomreservationsystem.converter.AbstractDTOConverter;
 import pl.sdaacademy.conferenceroomreservationsystem.dto.AbstractBaseDTO;
 import pl.sdaacademy.conferenceroomreservationsystem.entity.DistributedEntity;
+import pl.sdaacademy.conferenceroomreservationsystem.exception.RecordNotFoundException;
 import pl.sdaacademy.conferenceroomreservationsystem.repository.DistributedRepository;
 
 import java.time.LocalDateTime;
@@ -46,7 +47,8 @@ abstract public class AbstractCRUDLService<ENTITY extends DistributedEntity, DTO
 
         if (entity == null) {
             LOG.error("Failed to save entity of class '{}'", entityClass.getSimpleName());
-            return null;
+            throw new RecordNotFoundException("Failed to find " + entityClass.getSimpleName().replace("Entity", ""));
+//            return null;
         }
 
         // set modified to the current datetime
@@ -68,7 +70,8 @@ abstract public class AbstractCRUDLService<ENTITY extends DistributedEntity, DTO
 
         if (entity == null) {
             LOG.error("Failed to find entity with ID '{}'", id);
-            return null;
+            throw new RecordNotFoundException("Failed to find " + entityClass.getSimpleName().replace("Entity", "") + " with ID: " + id);
+//            return null;
         }
 
         return converter.convert(entity);

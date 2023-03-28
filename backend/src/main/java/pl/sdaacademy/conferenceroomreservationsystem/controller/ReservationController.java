@@ -26,7 +26,6 @@ public class ReservationController extends AbstractCRUDLController<ReservationEn
     @GetMapping("/user/{username}")
     public ResponseEntity<List<ReservationDTO>> getUserReservations(@PathVariable String username) {
         List<ReservationDTO> reservations = reservationService.getUserReservations(username);
-
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 }
