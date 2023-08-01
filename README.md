@@ -6,6 +6,7 @@ The application is written in Java Spring Boot, MySQL, Angular, and Bootstrap
 Boy, was angular not beginner friendly, I made plenty of mistakes along the way and had to use a few resources: 
 
 I used the angular-calendar component found here: https://www.npmjs.com/package/angular-calendar
+
 I used various ng-bootstrap components found here: https://ng-bootstrap.github.io/#/home
 
 # Month View
