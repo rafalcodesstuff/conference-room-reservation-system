@@ -20,8 +20,8 @@ I used various ng-bootstrap components found here: https://ng-bootstrap.github.i
 # Simple Registration
 ![image](https://github.com/rafalcodesstuff/conference-room-reservation-system/assets/108491087/2c92f479-2431-49f5-96f8-503994040c50)
 
-# Password Hashing
+# Session Storage
 ![image](https://github.com/rafalcodesstuff/conference-room-reservation-system/assets/108491087/bc53ad63-e8a7-4bfc-9f0e-82164659cbb9)
 
-# Session Storage
+# Password Hashing
 ![image](https://github.com/rafalcodesstuff/conference-room-reservation-system/assets/108491087/59d082be-ee0f-4892-86dd-414ceb6944f6)
